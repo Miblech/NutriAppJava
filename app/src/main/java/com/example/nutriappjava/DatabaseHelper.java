@@ -1,5 +1,6 @@
 package com.example.nutriappjava;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,7 +12,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,26 +43,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try{
-            String CREATE_FOOD_TABLE = "CREATE TABLE " + "food" + "("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "name TEXT NOT NULL," + "calories REAL," + "serving_size_g REAL,"
-                    + "fat_total_g REAL," + "fat_saturated_g REAL," + "protein_g REAL,"
-                    + "sodium_mg INTEGER," + "potassium_mg INTEGER," + "cholesterol_mg INTEGER,"
-                    + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
-                    + ")";
+            if (!tableExists(db, "food_diary_cal_eaten")) {
+                String CREATE_FOOD_CAL_EATEN = "CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
+                        "cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "cal_eaten_date DATE, " +
+                        "cal_eaten_meal_no REAL, " +
+                        "cal_eaten_energy REAL, " +
+                        "cal_eaten_proteins REAL, " +
+                        "cal_eaten_carbs REAL, " +
+                        "cal_eaten_fat REAL); ";
+                        db.execSQL(CREATE_FOOD_CAL_EATEN);
+            }
 
-            db.execSQL(CREATE_FOOD_TABLE);
+            if (!tableExists(db, "food_diary")) {
+                String CREATE_FOOD_DIARY = "CREATE TABLE IF NOT EXISTS food_diary (" +
+                        "fd_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "fd_date DATE, " +
+                        "fd_meal_number INT, " +
+                        "fd_food_id INT, " +
+                        "fd_serving_size REAL, " +
+                        "fd_serving_mesurment VARCHAR, " +
+                        "fd_energy_calculated REAL, " +
+                        "fd_protein_calculated REAL, " +
+                        "fd_calories_calculated REAL, " +
+                        "fd_fat_calculated REAL);";
+                        db.execSQL(CREATE_FOOD_DIARY);
+            }
+
+            if (!tableExists(db, "food")){
+                String CREATE_FOOD_TABLE = "CREATE TABLE " + "food" + "("
+                        + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + "name TEXT NOT NULL," + "calories REAL," + "serving_size_g REAL,"
+                        + "fat_total_g REAL," + "fat_saturated_g REAL," + "protein_g REAL,"
+                        + "sodium_mg INTEGER," + "potassium_mg INTEGER," + "cholesterol_mg INTEGER,"
+                        + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
+                        + ")";
+                db.execSQL(CREATE_FOOD_TABLE);
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
 
     }
 
+    private boolean tableExists(SQLiteDatabase db, String tableName){
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?", new String[]{tableName});
+        if (cursor != null && cursor.moveToFirst()){
+            int count = cursor.getInt(0);
+            cursor.close();
+            return count > 0;
+        }
+        return false;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try{
-            //String UPDATE_TABLE ="DROP TABLE IF EXISTS ");
-            //db.execSQL(UPDATE_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
+            db.execSQL("DROP TABLE IF EXISTS food_diary");
+            db.execSQL("DROP TABLE IF EXISTS food");
             onCreate(db);
 
             String TAG = "Tag";
@@ -78,6 +118,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void close(){
     super.close();
+    }
+    @SuppressLint("Range")
+    public void logTableStructure(SQLiteDatabase db, String tableName) {
+        Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
+        if (cursor!= null) {
+            while (cursor.moveToNext()) {
+                String columnName = cursor.getString(cursor.getColumnIndex("name"));
+                 String columnType = cursor.getString(cursor.getColumnIndex("type"));
+                int notNull = cursor.getInt(cursor.getColumnIndex("notnull"));
+                int primaryKey = cursor.getInt(cursor.getColumnIndex("pk"));
+                System.out.println(columnName + ": " + columnType + " (NOT NULL: " + notNull + ", PK: " + primaryKey + ")");
+            }
+            cursor.close();
+        }
     }
 
     public void insertWrittenData(SQLiteDatabase db, String name, double calories, double servingSizeG,
