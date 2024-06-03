@@ -236,9 +236,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public int countRows() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM food", null);
+    public int countRows(SQLiteDatabase db, String tableName) {
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + tableName, null);
         int count = 0;
         if (cursor.moveToFirst()) {
             count = cursor.getInt(0);
