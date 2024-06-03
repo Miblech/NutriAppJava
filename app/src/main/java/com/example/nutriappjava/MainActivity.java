@@ -22,17 +22,22 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         nutritionInfoFetcher = new NutritionInfoFetcher(dbHelper, MainActivity.this);
-        /*
-        System.out.println("FOOD TABLE");
-        dbHelper.logTableStructure(db, "food");
-        System.out.println("FOOD DIARY TABLE");
-        dbHelper.logTableStructure(db, "food_diary");
-        System.out.println("FOOD DIARY CAL EATEN TABLE");
-        dbHelper.logTableStructure(db, "food_diary_cal_eaten");*/
-        dbHelper.clearFoodTable();
 
-        String initialQuery = "brisket and tomato";
-        fetchAndStoreNutritionInfo(initialQuery);
+        System.out.println("USERS TABLE");
+        dbHelper.logTableStructure(db, "users");
+        System.out.println("food_diary_cal_eaten TABLE");
+        dbHelper.logTableStructure(db, "food_diary_cal_eaten");
+        System.out.println("food_diary TABLE");
+        dbHelper.logTableStructure(db, "food_diary");
+        System.out.println("Food TABLE");
+        dbHelper.logTableStructure(db, "food");
+        System.out.println("FOOD DAILY INTAKE TABLE");
+        dbHelper.logTableStructure(db, "daily_activity_and_intake");
+        System.out.println("Activities TABLE");
+        dbHelper.logTableStructure(db, "activities");
+
+        // Clear food table
+        dbHelper.clearFoodTable();
 
     }
 

@@ -12,7 +12,73 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
+
+    String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
+            "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "user_name VARCHAR, " +
+            "user_password VARCHAR, " +
+            "user_email VARCHAR, " +
+            "user_salt VARCHAR, " +
+            "user_dob DATE, " +
+            "user_gender INT, " +
+            "user_location VARCHAR, " +
+            "user_height REAL, " +
+            "user_weight REAL, " +
+            "user_target_weight REAL, " +
+            "user_activity_level INT, " +
+            "user_notes VARCHAR, " +
+            "user_last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
+            "";
+
+    String CREATE_FOOD_TABLE = "CREATE TABLE " + "food" + "("
+            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + "name TEXT NOT NULL," + "calories REAL," + "serving_size_g REAL,"
+            + "fat_total_g REAL," + "fat_saturated_g REAL," + "protein_g REAL,"
+            + "sodium_mg INTEGER," + "potassium_mg INTEGER," + "cholesterol_mg INTEGER,"
+            + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
+            + ")";
+
+    String CREATE_ACTIVITIES_TABLE = "CREATE TABLE activities (" +
+            "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "Name VARCHAR(255), " +
+            "Type VARCHAR(255), " +
+            "CaloriesPerHour INT, " +
+            "DurationMinutes INT, " +
+            "TotalCalories INT " +
+            ");";
+
+    String CREATE_FOOD_CAL_EATEN = "CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
+            "cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "cal_eaten_date DATE, " +
+            "cal_eaten_meal_no REAL, " +
+            "cal_eaten_energy REAL, " +
+            "cal_eaten_proteins REAL, " +
+            "cal_eaten_carbs REAL, " +
+            "cal_eaten_fat REAL); ";
+
+    String CREATE_FOOD_DIARY = "CREATE TABLE IF NOT EXISTS food_diary (" +
+            "fd_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "fd_date DATE, " +
+            "fd_meal_number INT, " +
+            "fd_food_id INT, " +
+            "fd_serving_size REAL, " +
+            "fd_serving_mesurment VARCHAR, " +
+            "fd_energy_calculated REAL, " +
+            "fd_protein_calculated REAL, " +
+            "fd_calories_calculated REAL, " +
+            "fd_fat_calculated REAL);";
+    String CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE = "CREATE TABLE daily_activity_and_intake (" +
+            "entry_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "date DATE, " +
+            "user_id INTEGER, " +
+            "activity_id INTEGER, " +
+            "intake_id INTEGER, " +
+            "total_calories_burned INT, " +
+            "total_calories_consumed INT, " +
+            "FOREIGN KEY (user_id) REFERENCES users(user_id), " +
+            "FOREIGN KEY (activity_id) REFERENCES activities(ID), " +
+            "FOREIGN KEY (intake_id) REFERENCES intake(ID));";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,16 +88,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             db.execSQL("DROP TABLE IF EXISTS food");
-
-            String CREATE_FOOD_TABLE = "CREATE TABLE " + "food" + "("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "name TEXT NOT NULL," + "calories REAL," + "serving_size_g REAL,"
-                    + "fat_total_g REAL," + "fat_saturated_g REAL," + "protein_g REAL,"
-                    + "sodium_mg INTEGER," + "potassium_mg INTEGER," + "cholesterol_mg INTEGER,"
-                    + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
-                    + ")";
+            db.execSQL("DROP TABLE IF EXISTS activities");
+            db.execSQL("DROP TABLE IF EXISTS users");
+            db.execSQL("DROP TABLE IF EXISTS daily_activity_and_intake");
+            db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
+            db.execSQL("DROP TABLE IF EXISTS food_diary");
 
             db.execSQL(CREATE_FOOD_TABLE);
+            db.execSQL(CREATE_ACTIVITIES_TABLE);
+            db.execSQL(CREATE_USER_TABLE);
+            db.execSQL(CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE);
+            db.execSQL(CREATE_FOOD_CAL_EATEN);
+            db.execSQL(CREATE_FOOD_DIARY);
             onCreate(db);
         } catch (SQLException e){
             e.printStackTrace();
@@ -44,61 +112,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try{
             if (!tableExists(db, "users")) {
-                String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
-                        "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "user_name VARCHAR, " +
-                        "user_password VARCHAR), " +
-                        "user_email VARCHAR, " +
-                        "user_salt VARCHAR, " +
-                        "user_dob DATE, " +
-                        "user_gender INT, " +
-                        "user_location VARCHAR, " +
-                        "user_height REAL, " +
-                        "user_weight REAL, " +
-                        "user_target_weight REAL, " +
-                        "user_activity_level INT, " +
-                        "user_notes VARCHAR, " +
-                        "user_last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
-                        "";
                 db.execSQL(CREATE_USER_TABLE);
             }
-
-            if (!tableExists(db, "food_diary_cal_eaten")) {
-                String CREATE_FOOD_CAL_EATEN = "CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
-                        "cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "cal_eaten_date DATE, " +
-                        "cal_eaten_meal_no REAL, " +
-                        "cal_eaten_energy REAL, " +
-                        "cal_eaten_proteins REAL, " +
-                        "cal_eaten_carbs REAL, " +
-                        "cal_eaten_fat REAL); ";
-                        db.execSQL(CREATE_FOOD_CAL_EATEN);
-            }
-
-            if (!tableExists(db, "food_diary")) {
-                String CREATE_FOOD_DIARY = "CREATE TABLE IF NOT EXISTS food_diary (" +
-                        "fd_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "fd_date DATE, " +
-                        "fd_meal_number INT, " +
-                        "fd_food_id INT, " +
-                        "fd_serving_size REAL, " +
-                        "fd_serving_mesurment VARCHAR, " +
-                        "fd_energy_calculated REAL, " +
-                        "fd_protein_calculated REAL, " +
-                        "fd_calories_calculated REAL, " +
-                        "fd_fat_calculated REAL);";
-                        db.execSQL(CREATE_FOOD_DIARY);
-            }
-
             if (!tableExists(db, "food")){
-                String CREATE_FOOD_TABLE = "CREATE TABLE " + "food" + "("
-                        + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + "name TEXT NOT NULL," + "calories REAL," + "serving_size_g REAL,"
-                        + "fat_total_g REAL," + "fat_saturated_g REAL," + "protein_g REAL,"
-                        + "sodium_mg INTEGER," + "potassium_mg INTEGER," + "cholesterol_mg INTEGER,"
-                        + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
-                        + ")";
                 db.execSQL(CREATE_FOOD_TABLE);
+            }
+            if (!tableExists(db, "activities")) {
+                db.execSQL(CREATE_ACTIVITIES_TABLE);
+            }
+            if (!tableExists(db, "daily_activity_and_intake")) {
+                db.execSQL(CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE);
+            }
+            if (!tableExists(db, "food_diary_cal_eaten")) {
+                db.execSQL(CREATE_FOOD_CAL_EATEN);
+            }
+            if (!tableExists(db, "food_diary")) {
+                db.execSQL(CREATE_FOOD_DIARY);
             }
         } catch (SQLException e){
             e.printStackTrace();
