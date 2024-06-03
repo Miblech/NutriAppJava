@@ -5,10 +5,10 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
             android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <ImageView android:src="@drawable/nutri_app_logo"
                 android:layout_width="wrap_content"
@@ -24,12 +24,39 @@
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
 
+            <EditText
+                android:id="@+id/editTextFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name" />
+
+            <TextView
+                android:text="@string/password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword" />
+
             <TextView
                 android:text="@string/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextUserEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
 
             <TextView
                 android:text="@string/username"
@@ -45,12 +72,38 @@
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
 
+            <EditText
+                android:id="@+id/editTextUserDob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date of Birth"
+                android:inputType="date" />
+
             <TextView
                 android:text="@string/gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroupGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male" />
+            </RadioGroup>
 
             <TextView
                 android:text="@string/location"
@@ -59,12 +112,25 @@
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
 
+            <EditText
+                android:id="@+id/editTextUserLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Location" />
+
             <TextView
                 android:text="@string/height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextUserHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Height (m)"
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:text="@string/weight"
@@ -73,12 +139,32 @@
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
 
+            <EditText
+                android:id="@+id/editTextUserWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Weight (kg)"
+                android:inputType="numberDecimal" />
+
             <TextView
                 android:text="@string/target_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextUserTargetWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Target Weight (kg)"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/buttonSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign Up" />
 
         </LinearLayout>
 

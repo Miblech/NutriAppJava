@@ -26,7 +26,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "user_height REAL, " +
             "user_weight REAL, " +
             "user_target_weight REAL, " +
-            "user_activity_level INT, " +
             "user_notes VARCHAR, " +
             "user_last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
             "";
