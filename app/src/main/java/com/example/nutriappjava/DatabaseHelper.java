@@ -12,7 +12,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,6 +43,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try{
+            if (!tableExists(db, "users")) {
+                String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
+                        "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "user_name VARCHAR, " +
+                        "user_password VARCHAR), " +
+                        "user_email VARCHAR, " +
+                        "user_salt VARCHAR, " +
+                        "user_dob DATE, " +
+                        "user_gender INT, " +
+                        "user_location VARCHAR, " +
+                        "user_height REAL, " +
+                        "user_weight REAL, " +
+                        "user_target_weight REAL, " +
+                        "user_activity_level INT, " +
+                        "user_notes VARCHAR, " +
+                        "user_last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
+                        "";
+                db.execSQL(CREATE_USER_TABLE);
+            }
+
             if (!tableExists(db, "food_diary_cal_eaten")) {
                 String CREATE_FOOD_CAL_EATEN = "CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
                         "cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
