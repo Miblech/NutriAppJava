@@ -1,5 +1,7 @@
 package com.example.nutriappjava;
 
+import static com.example.nutriappjava.SecurityUtils.hashPassword;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,23 +11,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.nutriappjava.classes.Fooditem;
+import com.example.nutriappjava.classes.User;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
 
     String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "user_name VARCHAR, " +
             "user_password VARCHAR, " +
-            "user_email VARCHAR, " +
             "user_salt VARCHAR, " +
+            "user_email VARCHAR, " +
             "user_dob DATE, " +
             "user_gender INT, " +
             "user_height REAL, " +
             "user_weight REAL, " +
             "user_target_weight REAL, " +
-            "user_notes VARCHAR, " +
             "user_last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
             "";
 
@@ -82,8 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void clearFoodTable() {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void clearTables(SQLiteDatabase db) {
         try{
             db.execSQL("DROP TABLE IF EXISTS food");
             db.execSQL("DROP TABLE IF EXISTS activities");
@@ -102,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (SQLException e){
             e.printStackTrace();
         }finally {
-            db.close();
+            System.out.println("TABLES CLEARED");
         }
     }
 
@@ -207,7 +210,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertFoodItem(foodItem foodItem) {
+    public void insertFoodItem(Fooditem foodItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", foodItem.getName());
@@ -234,14 +237,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
+
     public int countRows(SQLiteDatabase db, String tableName) {
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + tableName, null);
         int count = 0;
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0);
+        if (cursor!= null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+            cursor.close();
         }
-        cursor.close();
-        db.close();
         return count;
     }
 }

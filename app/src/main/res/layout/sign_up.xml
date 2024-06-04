@@ -139,6 +139,14 @@
                         android:paddingLeft="30dp">
 
                         <RadioButton
+                            android:id="@+id/radioButtonMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Male"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"/>
+
+                        <RadioButton
                             android:id="@+id/radioButtonFemale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -146,13 +154,6 @@
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioButtonMale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Male"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"/>
                     </RadioGroup>
 
                 </TableRow>
@@ -200,8 +201,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Target Weight (kg)"
                 android:inputType="numberDecimal" />
-
-
 
             <Button
                 android:id="@+id/buttonSignUp"

@@ -5,12 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.example.nutriappjava.foodItem; // Ensure you have a com.example.nutriappjava.foodItem model class defined
+import com.example.nutriappjava.classes.Fooditem; // Ensure you have a com.example.nutriappjava.classes.Fooditem model class defined
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>> {
+public class NutritionInfoFetcher extends AsyncTask<String, Void, List<Fooditem>> {
 
     private DatabaseHelper dbHelper;
 
@@ -37,8 +34,8 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
     private static final String NUTRITION_API_URL = "https://api.api-ninjas.com/v1/nutrition";
 
     @Override
-    protected List<foodItem> doInBackground(String... strings) {
-        List<foodItem> foodItems = new ArrayList<>();
+    protected List<Fooditem> doInBackground(String... strings) {
+        List<Fooditem> foodItems = new ArrayList<>();
         String query = strings[0];
 
         try {
@@ -60,7 +57,7 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
 
 
                 Gson gson = new Gson();
-                Type type = new TypeToken<List<foodItem>>(){}.getType();
+                Type type = new TypeToken<List<Fooditem>>(){}.getType();
                 foodItems = gson.fromJson(response.toString(), type);
             } else {
                 Log.e("API CALL", "Failed : HTTP error code : " + connection.getResponseCode());
@@ -73,12 +70,12 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
     }
 
     @Override
-    protected void onPostExecute(List<foodItem> foodItems) {
+    protected void onPostExecute(List<Fooditem> foodItems) {
         super.onPostExecute(foodItems);
 
         if (!foodItems.isEmpty()) {
 
-            for (foodItem foodItem : foodItems) {
+            for (Fooditem foodItem : foodItems) {
                 dbHelper.insertFoodItem(foodItem);
             }
             Toast.makeText(context , "Data fetched successfully!", Toast.LENGTH_SHORT).show();

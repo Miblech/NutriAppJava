@@ -1,6 +1,6 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.classes;
 
-public class foodItem {
+public class Fooditem {
     private String name;
     private double calories;
     private double servingSizeG;
@@ -14,10 +14,10 @@ public class foodItem {
     private double fiberG;
     private double sugarG;
 
-    public foodItem() {
+    public Fooditem() {
     }
 
-    public foodItem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
+    public Fooditem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
         this.name = name;
         this.calories = calories;
         this.servingSizeG = servingSizeG;

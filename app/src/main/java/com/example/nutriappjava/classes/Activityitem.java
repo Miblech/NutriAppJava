@@ -1,15 +1,15 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.classes;
 
-public class activityItem {
+public class Activityitem {
     private String name;
     private int caloriesPerHour;
     private int durationMinutes;
     private int totalCalories;
 
-    public activityItem() {
+    public Activityitem() {
     }
 
-    public activityItem(String name, int caloriesPerHour, int durationMinutes, int totalCalories) {
+    public Activityitem(String name, int caloriesPerHour, int durationMinutes, int totalCalories) {
         this.name = name;
         this.caloriesPerHour = caloriesPerHour;
         this.durationMinutes = durationMinutes;

@@ -9,11 +9,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+import java.util.Base64;
+
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private NutritionInfoFetcher nutritionInfoFetcher;
+
+    private ActivityFetcher activityFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,35 +33,45 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        nutritionInfoFetcher = new NutritionInfoFetcher(dbHelper, MainActivity.this);
+
+        if (!db.isOpen()){
+            db = dbHelper.getReadableDatabase();
+        }
+
+        //dbHelper.clearTables(db);
+
+
 
         int numberRows = dbHelper.countRows(db, "users");
 
         if (numberRows < 1) {
-            // Create new user
+            //CREATE USERS
             Intent intent = new Intent(MainActivity.this, SignUp.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
         }
 
-        //System.out.println("USERS TABLE");
-        //dbHelper.logTableStructure(db, "users");
-        //System.out.println("food_diary_cal_eaten TABLE");
-        //dbHelper.logTableStructure(db, "food_diary_cal_eaten");
-        //System.out.println("food_diary TABLE");
-        //dbHelper.logTableStructure(db, "food_diary");
-        //System.out.println("Food TABLE");
-        //dbHelper.logTableStructure(db, "food");
-        //System.out.println("FOOD DAILY INTAKE TABLE");
-        //dbHelper.logTableStructure(db, "daily_activity_and_intake");
-        //System.out.println("Activities TABLE");
-        //dbHelper.logTableStructure(db, "activities");
+        db.close();
 
-        // Clear food table
-        dbHelper.clearFoodTable();
-
-    }
-
-    private void fetchAndStoreNutritionInfo(String query) {
-        nutritionInfoFetcher.execute(query);
     }
 }
+
+
+//System.out.println("USERS TABLE");
+//dbHelper.logTableStructure(db, "users");
+//System.out.println("food_diary_cal_eaten TABLE");
+//dbHelper.logTableStructure(db, "food_diary_cal_eaten");
+//System.out.println("food_diary TABLE");
+//dbHelper.logTableStructure(db, "food_diary");
+//System.out.println("Food TABLE");
+//dbHelper.logTableStructure(db, "food");
+//System.out.println("FOOD DAILY INTAKE TABLE");
+//dbHelper.logTableStructure(db, "daily_activity_and_intake");
+//System.out.println("Activities TABLE");
+//dbHelper.logTableStructure(db, "activities");
+
+
+
+// Clear food table
