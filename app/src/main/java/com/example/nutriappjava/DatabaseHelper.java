@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance;
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -44,43 +44,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     String CREATE_ACTIVITIES_TABLE = "CREATE TABLE activities (" +
             "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "Name VARCHAR(255), " +
-            "Type VARCHAR(255), " +
+            "Description VARCHAR(255), " +
             "CaloriesPerHour INT, " +
             "DurationMinutes INT, " +
             "TotalCalories INT " +
             ");";
 
-    String CREATE_FOOD_CAL_EATEN = "CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
-            "cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "cal_eaten_date DATE, " +
-            "cal_eaten_meal_no REAL, " +
-            "cal_eaten_energy REAL, " +
-            "cal_eaten_proteins REAL, " +
-            "cal_eaten_carbs REAL, " +
-            "cal_eaten_fat REAL); ";
-
-    String CREATE_FOOD_DIARY = "CREATE TABLE IF NOT EXISTS food_diary (" +
-            "fd_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "fd_date DATE, " +
-            "fd_meal_number INT, " +
-            "fd_food_id INT, " +
-            "fd_serving_size REAL, " +
-            "fd_serving_mesurment VARCHAR, " +
-            "fd_energy_calculated REAL, " +
-            "fd_protein_calculated REAL, " +
-            "fd_calories_calculated REAL, " +
-            "fd_fat_calculated REAL);";
-    String CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE = "CREATE TABLE daily_activity_and_intake (" +
-            "entry_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "date DATE, " +
-            "user_id INTEGER, " +
-            "activity_id INTEGER, " +
-            "intake_id INTEGER, " +
-            "total_calories_burned INT, " +
-            "total_calories_consumed INT, " +
-            "FOREIGN KEY (user_id) REFERENCES users(user_id), " +
-            "FOREIGN KEY (activity_id) REFERENCES activities(ID), " +
-            "FOREIGN KEY (intake_id) REFERENCES intake(ID));";
+    String CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE = "CREATE TABLE daily_logs (" +
+            " log_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            " date DATE, " +
+            " activity_id INTEGER, " +
+            " activity_calories REAL, " +
+            " activity_duration INTEGER, " +
+            " food_id INTEGER, " +
+            " food_calories REAL, " +
+            " food_quantity INTEGER, " +
+            " FOREIGN KEY (activity_id) REFERENCES activities(ID), " +
+            " FOREIGN KEY (food_id) REFERENCES food(id) " +
+            ");";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -99,19 +80,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void clearTables(SQLiteDatabase db) {
         try{
+
+            db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS food");
             db.execSQL("DROP TABLE IF EXISTS activities");
-            db.execSQL("DROP TABLE IF EXISTS users");
-            db.execSQL("DROP TABLE IF EXISTS daily_activity_and_intake");
-            db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
-            db.execSQL("DROP TABLE IF EXISTS food_diary");
+            db.execSQL("DROP TABLE IF EXISTS daily_logs");
 
             db.execSQL(CREATE_FOOD_TABLE);
             db.execSQL(CREATE_ACTIVITIES_TABLE);
             db.execSQL(CREATE_USER_TABLE);
             db.execSQL(CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE);
-            db.execSQL(CREATE_FOOD_CAL_EATEN);
-            db.execSQL(CREATE_FOOD_DIARY);
             onCreate(db);
         } catch (SQLException e){
             e.printStackTrace();
@@ -132,14 +110,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (!tableExists(db, "activities")) {
                 db.execSQL(CREATE_ACTIVITIES_TABLE);
             }
-            if (!tableExists(db, "daily_activity_and_intake")) {
+            if (!tableExists(db, "daily_logs")) {
                 db.execSQL(CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE);
-            }
-            if (!tableExists(db, "food_diary_cal_eaten")) {
-                db.execSQL(CREATE_FOOD_CAL_EATEN);
-            }
-            if (!tableExists(db, "food_diary")) {
-                db.execSQL(CREATE_FOOD_DIARY);
             }
         } catch (SQLException e){
             e.printStackTrace();
