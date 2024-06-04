@@ -16,20 +16,20 @@ import com.example.nutriappjava.classes.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private static DatabaseHelper instance;
     private static final String DATABASE_NAME = "myDatabase.db";
     private static final int DATABASE_VERSION = 10;
 
     String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "user_name VARCHAR, " +
+            "user_username VARCHAR, " +
+            "user_email VARCHAR, " +
             "user_password VARCHAR, " +
             "user_salt VARCHAR, " +
-            "user_email VARCHAR, " +
             "user_dob DATE, " +
             "user_gender INT, " +
             "user_height REAL, " +
             "user_weight REAL, " +
-            "user_target_weight REAL, " +
             "user_last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
             "";
 
@@ -84,6 +84,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public SQLiteDatabase getReadableDatabase() {
+        return super.getReadableDatabase();
+    }
+
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
     }
 
     public void clearTables(SQLiteDatabase db) {
@@ -181,32 +192,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 System.out.println(columnName + ": " + columnType + " (NOT NULL: " + notNull + ", PK: " + primaryKey + ")");
             }
             cursor.close();
-        }
-    }
-
-    public void insertWrittenData(SQLiteDatabase db, String name, double calories, double servingSizeG,
-                                  double fatTotalG, double fatSaturatedG, double proteinG,
-                                  int sodiumMg, int potassiumMg, int cholesterolMg,
-                                  double carbohydratesTotalG, double fiberG, double sugarG) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("calories", calories);
-        contentValues.put("serving_size_g", servingSizeG);
-        contentValues.put("fat_total_g", fatTotalG);
-        contentValues.put("fat_saturated_g", fatSaturatedG);
-        contentValues.put("protein_g", proteinG);
-        contentValues.put("sodium_mg", sodiumMg);
-        contentValues.put("potassium_mg", potassiumMg);
-        contentValues.put("cholesterol_mg", cholesterolMg);
-        contentValues.put("carbohydrates_total_g", carbohydratesTotalG);
-        contentValues.put("fiber_g", fiberG);
-        contentValues.put("sugar_g", sugarG);
-
-        long newRowId = db.insert("food", null, contentValues);
-        if (newRowId!= -1) {
-            Log.d("DatabaseHelper", "Insertion successful");
-        } else {
-            Log.e("DatabaseHelper", "Insertion failed");
         }
     }
 

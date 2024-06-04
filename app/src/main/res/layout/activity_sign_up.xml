@@ -24,17 +24,18 @@
                 <TableRow>
 
                     <TextView
-                        android:text="@string/name"
+                        android:text="@string/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:textSize="18sp"/>
 
                     <EditText
-                        android:id="@+id/editTextFullName"
+                        android:id="@+id/editTextUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Full Name" />
+                        android:hint="Username"
+                        android:inputType="textEmailAddress" />
 
 
                 </TableRow>
@@ -57,20 +58,6 @@
                 </TableRow>
 
             </TableLayout>
-
-            <TextView
-                android:text="@string/username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"/>
-
-            <EditText
-                android:id="@+id/editTextUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username"
-                android:inputType="textEmailAddress" />
 
             <TextView
                 android:text="@string/email"
@@ -114,8 +101,6 @@
                 </TableRow>
 
             </TableLayout>
-
-
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -186,20 +171,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Weight (kg)"
-                android:inputType="numberDecimal" />
-
-            <TextView
-                android:text="@string/target_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"/>
-
-            <EditText
-                android:id="@+id/editTextUserTargetWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Target Weight (kg)"
                 android:inputType="numberDecimal" />
 
             <Button

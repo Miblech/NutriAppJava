@@ -1,55 +1,45 @@
 package com.example.nutriappjava.classes;
 
-public class User {
-    private int userId;
-    private String userName;
-    private String userHashPassword;
-    private String userSalt;
-    private String userEmail;
+import java.util.Date;
 
+public class User {
     private String userUsername;
-    private String userDob;
+    private String userEmail;
+    private String userSalt;
+    private String userHashPassword;
+    private Date userDob;
     private int userGender;
     private double userHeight;
     private double userWeight;
-    private double userTargetWeight;
-    private long userLastSeen;
 
     public User() {
-    }
 
-    public User(int userId, String userName, String userHashPassword, String userSalt, String userEmail, String userUsername, String userDob, int userGender, double userHeight, double userWeight, double userTargetWeight, long userLastSeen) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userHashPassword = userHashPassword;
-        this.userSalt = userSalt;
-        this.userEmail = userEmail;
+    }
+    public User(String userUsername, String userEmail, String userSalt, String userHashPassword, Date userDob, int userGender, double userHeight, double userWeight) {
         this.userUsername = userUsername;
+        this.userEmail = userEmail;
+        this.userSalt = userSalt;
+        this.userHashPassword = userHashPassword;
         this.userDob = userDob;
         this.userGender = userGender;
         this.userHeight = userHeight;
         this.userWeight = userWeight;
-        this.userTargetWeight = userTargetWeight;
-        this.userLastSeen = userLastSeen;
     }
 
-    public User(String userName, String userPassword, String userSalt, String userEmail, String userUsername, String userDateOfBirth, double userHeight, double userWeight, double userTargetWeight, int userGender) {
+    public String getUserUsername() {
+        return userUsername;
     }
 
-    public int getUserId() {
-        return userId;
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getUserHashPassword() {
@@ -68,27 +58,11 @@ public class User {
         this.userSalt = userSalt;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getUserUsername() {
-        return userUsername;
-    }
-
-    public void setUserUsername(String userUsername) {
-        this.userUsername = userUsername;
-    }
-
-    public String getUserDob() {
+    public Date getUserDob() {
         return userDob;
     }
 
-    public void setUserDob(String userDob) {
+    public void setUserDob(Date userDob) {
         this.userDob = userDob;
     }
 
@@ -114,21 +88,5 @@ public class User {
 
     public void setUserWeight(double userWeight) {
         this.userWeight = userWeight;
-    }
-
-    public double getUserTargetWeight() {
-        return userTargetWeight;
-    }
-
-    public void setUserTargetWeight(double userTargetWeight) {
-        this.userTargetWeight = userTargetWeight;
-    }
-
-    public long getUserLastSeen() {
-        return userLastSeen;
-    }
-
-    public void setUserLastSeen(long userLastSeen) {
-        this.userLastSeen = userLastSeen;
     }
 }

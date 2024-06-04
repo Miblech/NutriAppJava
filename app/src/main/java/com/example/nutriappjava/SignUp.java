@@ -4,6 +4,7 @@ import static com.example.nutriappjava.SecurityUtils.hashPassword;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,10 @@ import com.example.nutriappjava.classes.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class SignUp extends AppCompatActivity {
 
@@ -32,6 +36,8 @@ public class SignUp extends AppCompatActivity {
     private Button signUpButton;
     private String selectedDate;
 
+    private DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +46,9 @@ public class SignUp extends AppCompatActivity {
         dateTextView = findViewById(R.id.DateTextView);
         datePickerButton = findViewById(R.id.DatePickerButton);
         signUpButton = findViewById(R.id.buttonSignUp);
+
+        dbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,32 +95,47 @@ public class SignUp extends AppCompatActivity {
 
         try {
 
-            EditText editTextFullName = findViewById(R.id.editTextFullName);
             EditText editTextPassword = findViewById(R.id.editTextPassword);
             EditText editTextUsername = findViewById(R.id.editTextUsername);
             EditText editTextUserEmail = findViewById(R.id.editTextUserEmail);
+            TextView editTextDateOfBirth = findViewById(R.id.DateTextView);
             EditText editTextUserHeight = findViewById(R.id.editTextUserHeight);
             EditText editTextUserWeight = findViewById(R.id.editTextUserWeight);
-            EditText editTextUserTargetWeight = findViewById(R.id.editTextUserTargetWeight);
             RadioGroup radioGroupGender = findViewById(R.id.radioGroupGender);
             RadioButton radioButtonMale = findViewById(R.id.radioButtonMale);
             RadioButton radioButtonFemale = findViewById(R.id.radioButtonFemale);
-
-            int userGender = radioGroupGender.getCheckedRadioButtonId() == R.id.radioButtonMale ? 0 : 1;
-
-            double userHeight = Double.parseDouble(editTextUserHeight.getText().toString());
-            double userWeight = Double.parseDouble(editTextUserWeight.getText().toString());
-            double userTargetWeight = Double.parseDouble(editTextUserTargetWeight.getText().toString());
-
-            String userName = editTextFullName.getText().toString();
             String userPassword = editTextPassword.getText().toString();
-            String userSalt = SecurityUtils.generateSalt(16);
-            String userHashPassword = hashPassword(userPassword, userSalt);
-            String userEmail = editTextUserEmail.getText().toString();
-            String userUsername = editTextUsername.getText().toString();
-            String userDateOfBirth = selectedDate;
 
-            User user = new User(userName, userHashPassword, userSalt, userEmail, userUsername, userDateOfBirth, userHeight, userWeight, userTargetWeight, userGender);
+
+            System.out.println("Introducing New User...");
+
+            String userUsername = editTextUsername.getText().toString();
+            System.out.println("Username: " + userUsername);
+            String userEmail = editTextUserEmail.getText().toString();
+            System.out.println("Email: " + userEmail);
+            String userSalt = SecurityUtils.generateSalt(16);
+            System.out.println("Salt : " + userSalt.toString());
+            String userHashPassword = hashPassword(userPassword, userSalt);
+            System.out.println("Password Hashed : " + userHashPassword.toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date userDateOfBirth;
+            try {
+                userDateOfBirth = dateFormat.parse(editTextDateOfBirth.getText().toString());
+                System.out.println("Date of birth " + userDateOfBirth.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+            System.out.println("Date of birth " + editTextDateOfBirth.getText().toString());
+            int userGender = radioGroupGender.getCheckedRadioButtonId() == R.id.radioButtonMale ? 0 : 1;
+            System.out.println(userGender);
+            double userHeight = Double.parseDouble(editTextUserHeight.getText().toString());
+            System.out.println("Height: " + userHeight);
+            double userWeight = Double.parseDouble(editTextUserWeight.getText().toString());
+            System.out.println("Weight: " + userWeight);
+
+
+            User user = new User(userUsername, userEmail, userSalt, userHashPassword, userDateOfBirth, userGender, userHeight, userWeight);
 
             insertUserIntoDatabase(user);
 
@@ -128,17 +152,33 @@ public class SignUp extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("user_name", user.getUserName());
-        values.put("user_password", user.getUserHashPassword());
-        values.put("user_salt", user.getUserSalt());
+        values.put("user_username", user.getUserUsername());
         values.put("user_email", user.getUserEmail());
-        values.put("user_dob", user.getUserDob());
+        values.put("user_salt", user.getUserSalt());
+        values.put("user_password", user.getUserHashPassword());
+        values.put("user_dob", user.getUserDob().getTime());
         values.put("user_gender", user.getUserGender());
         values.put("user_height", user.getUserHeight());
         values.put("user_weight", user.getUserWeight());
-        values.put("user_target_weight", user.getUserTargetWeight());
-        values.put("user_last_seen", user.getUserLastSeen());
         long newRowId = db.insert("users", null, values);
+
+        if (newRowId != -1) {
+            Toast.makeText(this, "User inserted successfully", Toast.LENGTH_SHORT).show();
+            System.out.println("User username : " + user.getUserUsername());
+            System.out.println("User email : " + user.getUserEmail());
+            System.out.println("User password : " + user.getUserHashPassword());
+            System.out.println("User salt : " + user.getUserSalt());
+            System.out.println("User dob : " + user.getUserDob());
+            System.out.println("User gender : " + user.getUserGender());
+            System.out.println("User height : " + user.getUserHeight());
+            System.out.println("User weight : " + user.getUserWeight());
+
+            Intent intent = new Intent(SignUp.this, MainActivity.class);
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(this, "Failed to insert user", Toast.LENGTH_SHORT).show();
+        }
 
         db.close();
     }
