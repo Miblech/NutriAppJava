@@ -22,7 +22,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "user_salt VARCHAR, " +
             "user_dob DATE, " +
             "user_gender INT, " +
-            "user_location VARCHAR, " +
             "user_height REAL, " +
             "user_weight REAL, " +
             "user_target_weight REAL, " +
