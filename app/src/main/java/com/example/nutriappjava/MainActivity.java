@@ -22,9 +22,6 @@ import javax.crypto.spec.PBEKeySpec;
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
-    private NutritionInfoFetcher nutritionInfoFetcher;
-
-    private ActivityFetcher activityFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         int numberRows = dbHelper.countRows(db, "users");
 
         if (numberRows < 1) {
-            //CREATE USERS
             Intent intent = new Intent(MainActivity.this, SignUp.class);
             startActivity(intent);
         } else {
@@ -57,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
-
 
 //System.out.println("USERS TABLE");
 //dbHelper.logTableStructure(db, "users");
@@ -71,7 +66,5 @@ public class MainActivity extends AppCompatActivity {
 //dbHelper.logTableStructure(db, "daily_activity_and_intake");
 //System.out.println("Activities TABLE");
 //dbHelper.logTableStructure(db, "activities");
-
-
 
 // Clear food table

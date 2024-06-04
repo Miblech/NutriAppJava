@@ -17,7 +17,7 @@ import com.example.nutriappjava.classes.User;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 10;
 
     String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +

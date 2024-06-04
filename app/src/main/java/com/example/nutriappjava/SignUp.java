@@ -28,16 +28,18 @@ public class SignUp extends AppCompatActivity {
 
     private TextView dateTextView;
     private Button datePickerButton;
+
+    private Button signUpButton;
     private String selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up);
+        setContentView(R.layout.activity_sign_up);
 
         dateTextView = findViewById(R.id.DateTextView);
         datePickerButton = findViewById(R.id.DatePickerButton);
-        Button signUpButton = findViewById(R.id.buttonSignUp);
+        signUpButton = findViewById(R.id.buttonSignUp);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,12 +82,6 @@ public class SignUp extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void useSelectedDate() {
-        if (selectedDate!= null) {
-            Log.d("Using Selected Date", selectedDate);
-        }
-    }
-
     private void signUpUser() throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         try {
@@ -118,8 +114,6 @@ public class SignUp extends AppCompatActivity {
             User user = new User(userName, userHashPassword, userSalt, userEmail, userUsername, userDateOfBirth, userHeight, userWeight, userTargetWeight, userGender);
 
             insertUserIntoDatabase(user);
-
-            // Save User in database
 
             Toast.makeText(this, "User created successfully!", Toast.LENGTH_LONG).show();
 
