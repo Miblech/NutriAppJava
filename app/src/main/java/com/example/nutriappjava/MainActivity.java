@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             db = dbHelper.getReadableDatabase();
         }
 
-        dbHelper.clearTables(db);
+        //dbHelper.clearTables(db);
 
 
 

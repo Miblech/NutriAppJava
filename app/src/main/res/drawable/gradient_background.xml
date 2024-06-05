@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Solid green background -->
+    <item android:drawable="@color/green"/>
+
+    <!-- Transparent layer for the gradient -->
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <gradient
+                android:startColor="#74DF00"
+            android:endColor="#FFFFFF"
+            android:type="linear"
+            android:angle="60"/>
+        </shape>
+    </item>
+</layer-list>
