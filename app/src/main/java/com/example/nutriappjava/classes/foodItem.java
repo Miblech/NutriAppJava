@@ -3,7 +3,7 @@ package com.example.nutriappjava.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Fooditem implements Parcelable {
+public class foodItem implements Parcelable {
     private String name;
     private double calories;
     private double servingSizeG;
@@ -17,10 +17,10 @@ public class Fooditem implements Parcelable {
     private double fiberG;
     private double sugarG;
 
-    public Fooditem() {
+    public foodItem() {
     }
 
-    public Fooditem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
+    public foodItem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
         this.name = name;
         this.calories = calories;
         this.servingSizeG = servingSizeG;
@@ -36,7 +36,7 @@ public class Fooditem implements Parcelable {
     }
 
 
-    protected Fooditem(Parcel in) {
+    protected foodItem(Parcel in) {
         name = in.readString();
         calories = in.readDouble();
         servingSizeG = in.readDouble();
@@ -51,15 +51,15 @@ public class Fooditem implements Parcelable {
         sugarG = in.readDouble();
     }
 
-    public static final Creator<Fooditem> CREATOR = new Creator<Fooditem>() {
+    public static final Creator<foodItem> CREATOR = new Creator<foodItem>() {
         @Override
-        public Fooditem createFromParcel(Parcel in) {
-            return new Fooditem(in);
+        public foodItem createFromParcel(Parcel in) {
+            return new foodItem(in);
         }
 
         @Override
-        public Fooditem[] newArray(int size) {
-            return new Fooditem[size];
+        public foodItem[] newArray(int size) {
+            return new foodItem[size];
         }
     };
 

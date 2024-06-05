@@ -11,11 +11,7 @@ import android.icu.util.Calendar;
 import android.text.format.DateFormat;
 import android.util.Log;
 
-import com.example.nutriappjava.classes.Activityitem;
-import com.example.nutriappjava.classes.Fooditem;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.nutriappjava.classes.foodItem;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -44,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
             + ")";
 
-    String CREATE_ACTIVITIES_TABLE = "CREATE TABLE activities (" +
+    String CREATE_SPORTS_TABLE = "CREATE TABLE sports (" +
             "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "Name VARCHAR(255), " +
             "Description VARCHAR(255), " +
@@ -53,16 +49,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "TotalCalories INT " +
             ");";
 
-    String CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE = "CREATE TABLE daily_logs (" +
+    String CREATE_DAILY_SPORT_AND_INTAKE_TABLE = "CREATE TABLE daily_logs (" +
             " log_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " date DATE UNIQUE, " +
-            " activity_id INTEGER, " +
-            " activity_calories REAL, " +
-            " activity_duration INTEGER, " +
+            " sport_id INTEGER, " +
+            " sport_calories REAL, " +
+            " sport_duration INTEGER, " +
             " food_id INTEGER, " +
             " food_calories REAL, " +
             " food_quantity INTEGER, " +
-            " FOREIGN KEY (activity_id) REFERENCES activities(ID), " +
+            " FOREIGN KEY (sport_id) REFERENCES sport(ID), " +
             " FOREIGN KEY (food_id) REFERENCES food(id) " +
             ");";
 
@@ -86,13 +82,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS food");
-            db.execSQL("DROP TABLE IF EXISTS activities");
+            db.execSQL("DROP TABLE IF EXISTS sports");
             db.execSQL("DROP TABLE IF EXISTS daily_logs");
 
             db.execSQL(CREATE_FOOD_TABLE);
-            db.execSQL(CREATE_ACTIVITIES_TABLE);
+            db.execSQL(CREATE_SPORTS_TABLE);
             db.execSQL(CREATE_USER_TABLE);
-            db.execSQL(CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE);
+            db.execSQL(CREATE_DAILY_SPORT_AND_INTAKE_TABLE);
             onCreate(db);
         } catch (SQLException e){
             e.printStackTrace();
@@ -110,11 +106,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (!tableExists(db, "food")){
                 db.execSQL(CREATE_FOOD_TABLE);
             }
-            if (!tableExists(db, "activities")) {
-                db.execSQL(CREATE_ACTIVITIES_TABLE);
+            if (!tableExists(db, "sport")) {
+                db.execSQL(CREATE_SPORTS_TABLE);
             }
             if (!tableExists(db, "daily_logs")) {
-                db.execSQL(CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE);
+                db.execSQL(CREATE_DAILY_SPORT_AND_INTAKE_TABLE);
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -170,7 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertFoodItem(Fooditem foodItem) {
+    public void insertFoodItem(foodItem foodItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", foodItem.getName());
@@ -203,9 +199,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (!cursor.moveToFirst()) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("date", (String) DateFormat.format("yyyy-MM-dd", Calendar.getInstance().getTime()));
-            contentValues.put("activity_id", -1);
-            contentValues.put("activity_calories", 0);
-            contentValues.put("activity_duration", 0);
+            contentValues.put("sport_id", -1);
+            contentValues.put("sport_calories", 0);
+            contentValues.put("sport_duration", 0);
             contentValues.put("food_id", -1);
             contentValues.put("food_calories", 0);
             contentValues.put("food_quantity", 0);

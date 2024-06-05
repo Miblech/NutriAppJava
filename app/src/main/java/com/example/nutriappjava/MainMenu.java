@@ -26,6 +26,7 @@ import com.example.nutriappjava.fragments.HomeFragment;
 import com.example.nutriappjava.fragments.LogsFragment;
 import com.example.nutriappjava.fragments.ProfileFragment;
 import com.example.nutriappjava.fragments.SettingsFragment;
+import com.example.nutriappjava.fragments.SportFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -84,6 +85,8 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new ProfileFragment()).commit();
         } else if (item.getItemId() == id.nav_food) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new FoodFragment()).commit();
+        } else if (item.getItemId() == id.nav_sports) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new SportFragment()).commit();
         } else if (item.getItemId() == id.nav_logs) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new LogsFragment()).commit();
         } else if (item.getItemId() == id.nav_add_logs) {

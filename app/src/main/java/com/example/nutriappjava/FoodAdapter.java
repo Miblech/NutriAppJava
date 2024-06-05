@@ -1,9 +1,6 @@
 package com.example.nutriappjava;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nutriappjava.classes.Fooditem;
+import com.example.nutriappjava.classes.foodItem;
 import com.example.nutriappjava.fragments.FoodDetailFragment;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
-    private List<Fooditem> foodItemList; // Declare foodItemList
+    private List<foodItem> foodItemList; // Declare foodItemList
     private Context context;
 
     public FoodAdapter(Context context) {
@@ -31,7 +28,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         this.foodItemList = new ArrayList<>();
     }
 
-    public FoodAdapter(List<Fooditem> foodItemList, Context context) {
+    public FoodAdapter(List<foodItem> foodItemList, Context context) {
         this.foodItemList = foodItemList!= null? new ArrayList<>(foodItemList) : new ArrayList<>(); // Use provided list if not null, otherwise initialize with an empty list
         this.context = context;
     }
@@ -45,7 +42,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Fooditem foodItem = foodItemList.get(position);
+        foodItem foodItem = foodItemList.get(position);
         holder.bind(foodItem);
     }
 
@@ -78,7 +75,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Fooditem foodItem) {
+        public void bind(foodItem foodItem) {
             Log.d("FoodAdapter", "Name: " + foodItem.getName());
             Log.d("FoodAdapter", "Calories: " + foodItem.getCalories());
             Log.d("FoodAdapter", "Serving Size in grams : " + foodItem.getServingSizeG());
@@ -107,7 +104,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            Fooditem clickedFoodItem = foodItemList.get(getAdapterPosition());
+            foodItem clickedFoodItem = foodItemList.get(getAdapterPosition());
 
             FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
             FoodDetailFragment newInstance = FoodDetailFragment.newInstance(clickedFoodItem);
@@ -117,7 +114,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         }
     }
 
-    public void updateData(List<Fooditem> foodItems) {
+    public void updateData(List<foodItem> foodItems) {
         this.foodItemList.clear();
         if (foodItems!= null &&!foodItems.isEmpty()) {
             this.foodItemList.addAll(foodItems);

@@ -5,40 +5,44 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class Activityitem implements Parcelable {
+public class sportItems implements Parcelable {
     private String name;
     private int caloriesPerHour;
     private int durationMinutes;
     private int totalCalories;
 
-    public Activityitem() {
+    public sportItems() {
     }
 
-    public Activityitem(String name, int caloriesPerHour, int durationMinutes, int totalCalories) {
+    public sportItems(String name, int caloriesPerHour, int durationMinutes, int totalCalories) {
         this.name = name;
         this.caloriesPerHour = caloriesPerHour;
         this.durationMinutes = durationMinutes;
         this.totalCalories = totalCalories;
     }
 
-    protected Activityitem(Parcel in) {
+    public sportItems(Parcel in) {
         name = in.readString();
         caloriesPerHour = in.readInt();
         durationMinutes = in.readInt();
         totalCalories = in.readInt();
     }
 
-    public static final Creator<Activityitem> CREATOR = new Creator<Activityitem>() {
+    public static final Creator<sportItems> CREATOR = new Creator<sportItems>() {
         @Override
-        public Activityitem createFromParcel(Parcel source) {
-            return new Activityitem(source);
+        public sportItems createFromParcel(Parcel source) {
+            return new sportItems(source);
         }
 
         @Override
-        public Activityitem[] newArray(int size) {
-            return new Activityitem[size];
+        public sportItems[] newArray(int size) {
+            return new sportItems[size];
         }
     };
+
+    public sportItems(String activityName) {
+        name = activityName;
+    }
 
     @Override
     public int describeContents() {

@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-import com.example.nutriappjava.classes.Fooditem;
+import com.example.nutriappjava.classes.foodItem;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class NutritionInfoFetcher extends AsyncTask<String, Void, List<Fooditem>> {
+public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>> {
     private DatabaseHelper dbHelper;
     private FoodAdapter foodAdapter;
 
@@ -34,8 +34,8 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<Fooditem>
     private static final String NUTRITION_API_URL = "https://api.api-ninjas.com/v1/nutrition";
 
     @Override
-    protected List<Fooditem> doInBackground(String... params) {
-        List<Fooditem> foodItems = new ArrayList<>();
+    protected List<foodItem> doInBackground(String... params) {
+        List<foodItem> foodItems = new ArrayList<>();
         try {
 
             String query = params[0];
@@ -61,7 +61,7 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<Fooditem>
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject food = jsonArray.getJSONObject(i);
-                    Fooditem foodItem = new Fooditem(
+                    foodItem foodItem = new foodItem(
                             food.getString("name"),
                             food.getDouble("calories"),
                             food.getDouble("serving_size_g"),
@@ -87,7 +87,7 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<Fooditem>
     }
 
     @Override
-    protected void onPostExecute(List<Fooditem> foodItems) {
+    protected void onPostExecute(List<foodItem> foodItems) {
         super.onPostExecute(foodItems);
         if (foodItems!= null &&!foodItems.isEmpty()) {
             foodAdapter.updateData(foodItems);

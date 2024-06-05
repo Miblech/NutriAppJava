@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +11,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.nutriappjava.R;
-import com.example.nutriappjava.classes.Fooditem;
 
 public class FoodDetailFragment extends Fragment {
 
-    private Fooditem foodItem;
+    private com.example.nutriappjava.classes.foodItem foodItem;
     private TextView nameTextView, caloriesTextView, servingSizeTextView, fatTotalTextView, fatSaturatedTextView, proteinTextView, sodiumTextView, potassiumTextView, cholesterolTextView, carbohydratesTotalTextView, fiberTextView, sugarTextView;
     private Button saveButton;
 
     public FoodDetailFragment() {
     }
 
-    public static FoodDetailFragment newInstance(Fooditem foodItem) {
+    public static FoodDetailFragment newInstance(com.example.nutriappjava.classes.foodItem foodItem) {
         FoodDetailFragment fragment = new FoodDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable("foodItem", foodItem);
