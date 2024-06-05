@@ -6,27 +6,27 @@
     tools:context=".fragments.FoodFragment">
 
     <EditText
-        android:id="@+id/search_input"
+        android:id="@+id/activity_search_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter food name and weight"
+        android:hint="Activity to Search"
         android:inputType="text"/>
 
     <TextView
-        android:id="@+id/display_text"
+        android:id="@+id/activity_display_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:visibility="gone"
-        android:layout_below="@id/search_input"
+        android:layout_below="@id/activity_search_input"
         android:layout_marginTop="16dp"/>
 
     <Button
-        android:id="@+id/search_button"
+        android:id="@+id/activity_search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
-        android:layout_below="@id/display_text"
+        android:layout_below="@id/activity_display_text"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_below="@id/search_button"
+        android:layout_below="@id/activity_search_button"
         android:layout_marginTop="32dp">
 
         <LinearLayout
@@ -49,8 +49,8 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/search_input"
-                android:layout_above="@id/display_text"
+                android:layout_below="@id/activity_search_input"
+                android:layout_above="@id/activity_display_text"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
 

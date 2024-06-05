@@ -1,86 +1,98 @@
 package com.example.nutriappjava;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.example.nutriappjava.classes.Fooditem; // Ensure you have a com.example.nutriappjava.classes.Fooditem model class defined
+
+import com.example.nutriappjava.classes.Fooditem;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class NutritionInfoFetcher extends AsyncTask<String, Void, List<Fooditem>> {
-
     private DatabaseHelper dbHelper;
+    private FoodAdapter foodAdapter;
 
-    public NutritionInfoFetcher(DatabaseHelper dbHelper, Context context){
-        this.dbHelper = dbHelper;
-        this.context = context;
+
+    public NutritionInfoFetcher(FoodAdapter foodAdapter) {
+        this.foodAdapter = foodAdapter;
     }
 
-    private Context context;
+
     private static final String API_KEY = "GzchbXFobnImhkxBWjLoQg==FOtbA37I0cIGxS7f";
     private static final String NUTRITION_API_URL = "https://api.api-ninjas.com/v1/nutrition";
 
     @Override
-    protected List<Fooditem> doInBackground(String... strings) {
+    protected List<Fooditem> doInBackground(String... params) {
         List<Fooditem> foodItems = new ArrayList<>();
-        String query = strings[0];
-
         try {
-            URL url = new URL(NUTRITION_API_URL + "?query=" + query);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            String query = params[0];
+            String fullUrl = NUTRITION_API_URL + "?query=" + URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-Api-Key", API_KEY);
             connection.connect();
 
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                StringBuilder response = new StringBuilder();
-                while ((line = reader.readLine())!= null) {
-                    response.append(line);
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer content = new StringBuffer();
+                while ((inputLine = in.readLine())!= null) {
+                    content.append(inputLine);
                 }
-                reader.close();
+                in.close();
+                connection.disconnect();
 
+                JSONArray jsonArray = new JSONArray(content.toString());
 
-                Gson gson = new Gson();
-                Type type = new TypeToken<List<Fooditem>>(){}.getType();
-                foodItems = gson.fromJson(response.toString(), type);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject food = jsonArray.getJSONObject(i);
+                    Fooditem foodItem = new Fooditem(
+                            food.getString("name"),
+                            food.getDouble("calories"),
+                            food.getDouble("serving_size_g"),
+                            food.getDouble("fat_total_g"),
+                            food.getDouble("fat_saturated_g"),
+                            food.getDouble("protein_g"),
+                            food.getInt("sodium_mg"),
+                            food.getInt("potassium_mg"),
+                            food.getInt("cholesterol_mg"),
+                            food.getDouble("carbohydrates_total_g"),
+                            food.getDouble("fiber_g"),
+                            food.getDouble("sugar_g")
+                    );
+                    foodItems.add(foodItem);
+                }
             } else {
-                Log.e("API CALL", "Failed : HTTP error code : " + connection.getResponseCode());
+                Log.e("API CALL", "Failed to fetch nutrition data. Response code: " + responseCode);
             }
-        } catch (IOException e) {
-            Log.e("API CALL", "IO Exception: ", e);
+        } catch (Exception e) {
+            Log.e("API CALL", "Error fetching nutrition data", e);
         }
-
         return foodItems;
     }
 
     @Override
     protected void onPostExecute(List<Fooditem> foodItems) {
         super.onPostExecute(foodItems);
-
-        if (!foodItems.isEmpty()) {
-
-            for (Fooditem foodItem : foodItems) {
-                dbHelper.insertFoodItem(foodItem);
-            }
-            Toast.makeText(context , "Data fetched successfully!", Toast.LENGTH_SHORT).show();
+        if (foodItems!= null &&!foodItems.isEmpty()) {
+            foodAdapter.updateData(foodItems);
         } else {
-            Toast.makeText(context , "No data found.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(foodAdapter.getContext(), "No results found", Toast.LENGTH_SHORT).show();
         }
     }
 }

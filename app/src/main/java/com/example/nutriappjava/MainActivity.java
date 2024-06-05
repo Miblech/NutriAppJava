@@ -53,18 +53,3 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
-
-//System.out.println("USERS TABLE");
-//dbHelper.logTableStructure(db, "users");
-//System.out.println("food_diary_cal_eaten TABLE");
-//dbHelper.logTableStructure(db, "food_diary_cal_eaten");
-//System.out.println("food_diary TABLE");
-//dbHelper.logTableStructure(db, "food_diary");
-//System.out.println("Food TABLE");
-//dbHelper.logTableStructure(db, "food");
-//System.out.println("FOOD DAILY INTAKE TABLE");
-//dbHelper.logTableStructure(db, "daily_activity_and_intake");
-//System.out.println("Activities TABLE");
-//dbHelper.logTableStructure(db, "activities");
-
-// Clear food table

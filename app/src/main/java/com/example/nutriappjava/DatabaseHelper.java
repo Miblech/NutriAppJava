@@ -1,7 +1,5 @@
 package com.example.nutriappjava;
 
-import static com.example.nutriappjava.SecurityUtils.hashPassword;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,10 +7,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.util.Calendar;
+import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.example.nutriappjava.classes.Activityitem;
 import com.example.nutriappjava.classes.Fooditem;
-import com.example.nutriappjava.classes.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -52,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     String CREATE_DAILY_ACTIVITY_AND_INTAKE_TABLE = "CREATE TABLE daily_logs (" +
             " log_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            " date DATE, " +
+            " date DATE UNIQUE, " +
             " activity_id INTEGER, " +
             " activity_calories REAL, " +
             " activity_duration INTEGER, " +
@@ -194,7 +197,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
+    public void createDailyLogIfNotExists() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM daily_logs WHERE date =?", new String[]{(String) DateFormat.format("yyyy-MM-dd", Calendar.getInstance().getTime())});
+        if (!cursor.moveToFirst()) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("date", (String) DateFormat.format("yyyy-MM-dd", Calendar.getInstance().getTime()));
+            contentValues.put("activity_id", -1);
+            contentValues.put("activity_calories", 0);
+            contentValues.put("activity_duration", 0);
+            contentValues.put("food_id", -1);
+            contentValues.put("food_calories", 0);
+            contentValues.put("food_quantity", 0);
+            db.insert("daily_logs", null, contentValues);
+        }
+        cursor.close();
+    }
 
 
     public int countRows(SQLiteDatabase db, String tableName) {

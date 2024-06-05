@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 
 import com.example.nutriappjava.R;
 
-public class HomeFragment extends Fragment {
+public class ActivitiesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_activities, container, false);
     }
 }

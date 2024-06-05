@@ -1,6 +1,9 @@
 package com.example.nutriappjava.classes;
 
-public class Fooditem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Fooditem implements Parcelable {
     private String name;
     private double calories;
     private double servingSizeG;
@@ -31,6 +34,58 @@ public class Fooditem {
         this.fiberG = fiberG;
         this.sugarG = sugarG;
     }
+
+
+    protected Fooditem(Parcel in) {
+        name = in.readString();
+        calories = in.readDouble();
+        servingSizeG = in.readDouble();
+        fatTotalG = in.readDouble();
+        fatSaturatedG = in.readDouble();
+        proteinG = in.readDouble();
+        sodiumMg = in.readInt();
+        potassiumMg = in.readInt();
+        cholesterolMg = in.readInt();
+        carbohydratesTotalG = in.readDouble();
+        fiberG = in.readDouble();
+        sugarG = in.readDouble();
+    }
+
+    public static final Creator<Fooditem> CREATOR = new Creator<Fooditem>() {
+        @Override
+        public Fooditem createFromParcel(Parcel in) {
+            return new Fooditem(in);
+        }
+
+        @Override
+        public Fooditem[] newArray(int size) {
+            return new Fooditem[size];
+        }
+    };
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeDouble(calories);
+        dest.writeDouble(servingSizeG);
+        dest.writeDouble(fatTotalG);
+        dest.writeDouble(fatSaturatedG);
+        dest.writeDouble(proteinG);
+        dest.writeInt(sodiumMg);
+        dest.writeInt(potassiumMg);
+        dest.writeInt(cholesterolMg);
+        dest.writeDouble(carbohydratesTotalG);
+        dest.writeDouble(fiberG);
+        dest.writeDouble(sugarG);
+    }
+
 
     public String getName() {
         return name;
@@ -127,4 +182,6 @@ public class Fooditem {
     public void setSugarG(double sugarG) {
         this.sugarG = sugarG;
     }
+
+
 }
