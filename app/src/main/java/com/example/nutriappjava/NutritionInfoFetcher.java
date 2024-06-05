@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.example.nutriappjava.adapters.FoodAdapter;
 import com.example.nutriappjava.classes.foodItem;
 
 import org.json.JSONArray;

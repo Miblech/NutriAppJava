@@ -16,4 +16,17 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string-array name="units_array">
+        <item>grams</item>
+        <item>kilograms</item>
+        <item>pounds</item>
+    </string-array>
+
+    <string-array name="meals_categories">
+        <item>Breakfast</item>
+        <item>Dinner</item>
+        <item>Lunch</item>
+    </string-array>
+
+
 </resources>

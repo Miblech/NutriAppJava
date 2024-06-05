@@ -26,7 +26,6 @@ import com.example.nutriappjava.fragments.HomeFragment;
 import com.example.nutriappjava.fragments.LogsFragment;
 import com.example.nutriappjava.fragments.ProfileFragment;
 import com.example.nutriappjava.fragments.SettingsFragment;
-import com.example.nutriappjava.fragments.SportFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,7 +71,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         }
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment(DatabaseHelper.getInstance(this))).commit();
             navigationView.setCheckedItem(id.nav_home);
         }
     }
@@ -80,13 +79,11 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == id.nav_home) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment(DatabaseHelper.getInstance(this))).commit();
         } else if (item.getItemId() == id.nav_profile) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new ProfileFragment()).commit();
         } else if (item.getItemId() == id.nav_food) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new FoodFragment()).commit();
-        } else if (item.getItemId() == id.nav_sports) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new SportFragment()).commit();
         } else if (item.getItemId() == id.nav_logs) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new LogsFragment()).commit();
         } else if (item.getItemId() == id.nav_add_logs) {

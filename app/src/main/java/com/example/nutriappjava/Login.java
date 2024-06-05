@@ -66,6 +66,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("Range")
     private void attempLogin() throws NoSuchAlgorithmException, InvalidKeySpecException {
         String usernameOrEmail = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
@@ -91,7 +92,6 @@ public class Login extends AppCompatActivity {
         if (cursor!= null && cursor.moveToFirst()) {
             @SuppressLint("Range") String storedPassword = cursor.getString(cursor.getColumnIndex("user_password"));
             @SuppressLint("Range") String storedSalt = cursor.getString(cursor.getColumnIndex("user_salt"));
-
             @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("user_email"));
             @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex("user_username"));
 
@@ -101,6 +101,7 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
                 SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("userId", cursor.getInt(cursor.getColumnIndex("user_id")));
                 editor.putString("username", username);
                 editor.putString("email", email);
                 editor.apply();
@@ -114,38 +115,7 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
         }
 
-        // List all users in the database
-        listAllUsers();
-
         if (cursor!= null) {
-            cursor.close();
-        }
-    }
-
-    private void listAllUsers() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(
-                "users",                     // Table name
-                null,                        // Columns to select (null means select all columns)
-                null,                        // Selection clause (null means no filter)
-                null,                        // Selection arguments (not used since we're not filtering)
-                null,                        // Group by (not applicable here)
-                null,                        // Having (not applicable here)
-                null                         // Order by (null means no order)
-        );
-
-        if (cursor!= null) {
-            while (cursor.moveToNext()) {
-                // Extracting user details
-                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("user_id")); // Assuming 'id' is the primary key
-                @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex("user_username"));
-                @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("user_email"));
-                @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("user_password"));
-                @SuppressLint("Range") String salt = cursor.getString(cursor.getColumnIndex("user_salt"));
-
-                // Displaying user details (for demonstration purposes)
-                Log.d("UserDetails", "ID: " + id + ", Username: " + username + ", Email: " + email + ", Password: " + password + ", Salt: " + salt);
-            }
             cursor.close();
         }
     }

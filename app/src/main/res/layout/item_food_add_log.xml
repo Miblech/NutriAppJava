@@ -6,11 +6,18 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/nameTextView"
+        android:id="@+id/food_list_food_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/food_list_food_calories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Serving Size"
+        android:textSize="14sp"/>
 
 </LinearLayout>

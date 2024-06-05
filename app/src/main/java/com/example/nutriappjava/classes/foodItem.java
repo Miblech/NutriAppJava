@@ -63,6 +63,9 @@ public class foodItem implements Parcelable {
         }
     };
 
+    public foodItem(int id, String name, float calories, float servingSizeG, float fatTotalG, float fatSaturatedG, float proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, float carbohydratesTotalG, float fiberG, float sugarG) {
+    }
+
 
     @Override
     public int describeContents() {

@@ -10,14 +10,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.util.Calendar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.nutriappjava.classes.foodItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance;
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 20;
 
     String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -40,26 +47,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "carbohydrates_total_g REAL," + "fiber_g REAL," + "sugar_g REAL"
             + ")";
 
-    String CREATE_SPORTS_TABLE = "CREATE TABLE sports (" +
-            "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "Name VARCHAR(255), " +
-            "Description VARCHAR(255), " +
-            "CaloriesPerHour INT, " +
-            "DurationMinutes INT, " +
-            "TotalCalories INT " +
+    String CREATE_DAILY_LOG_TABLE = "CREATE TABLE IF NOT EXISTS daily_log (" +
+            "log_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "user_id INTEGER, " +
+            "date TEXT NOT NULL, " +
+            "time TEXT NOT NULL, " +
+            "meal_type TEXT NOT NULL, " +
+            "food_item_id INTEGER, " +
+            "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+            "FOREIGN KEY(user_id) REFERENCES users(user_id), " +
+            "FOREIGN KEY(food_item_id) REFERENCES food(id)" +
             ");";
 
-    String CREATE_DAILY_SPORT_AND_INTAKE_TABLE = "CREATE TABLE daily_logs (" +
-            " log_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            " date DATE UNIQUE, " +
-            " sport_id INTEGER, " +
-            " sport_calories REAL, " +
-            " sport_duration INTEGER, " +
-            " food_id INTEGER, " +
-            " food_calories REAL, " +
-            " food_quantity INTEGER, " +
-            " FOREIGN KEY (sport_id) REFERENCES sport(ID), " +
-            " FOREIGN KEY (food_id) REFERENCES food(id) " +
+    String CREATE_MEAL_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS meal_items (" +
+            "log_id INTEGER, " +
+            "food_item_id INTEGER, " +
+            "PRIMARY KEY(log_id, food_item_id)," +
+            "FOREIGN KEY(log_id) REFERENCES daily_log(log_id)," +
+            "FOREIGN KEY(food_item_id) REFERENCES food(id)" +
             ");";
 
     public DatabaseHelper(Context context) {
@@ -82,13 +87,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS food");
-            db.execSQL("DROP TABLE IF EXISTS sports");
-            db.execSQL("DROP TABLE IF EXISTS daily_logs");
+            db.execSQL("DROP TABLE IF EXISTS daily_log");
+            db.execSQL("DROP TABLE IF EXISTS meal_items");
 
             db.execSQL(CREATE_FOOD_TABLE);
-            db.execSQL(CREATE_SPORTS_TABLE);
             db.execSQL(CREATE_USER_TABLE);
-            db.execSQL(CREATE_DAILY_SPORT_AND_INTAKE_TABLE);
+            db.execSQL(CREATE_DAILY_LOG_TABLE);
+            db.execSQL(CREATE_MEAL_ITEMS_TABLE);
             onCreate(db);
         } catch (SQLException e){
             e.printStackTrace();
@@ -106,11 +111,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (!tableExists(db, "food")){
                 db.execSQL(CREATE_FOOD_TABLE);
             }
-            if (!tableExists(db, "sport")) {
-                db.execSQL(CREATE_SPORTS_TABLE);
+            if (!tableExists(db, "daily_log")){
+                db.execSQL(CREATE_DAILY_LOG_TABLE);
             }
-            if (!tableExists(db, "daily_logs")) {
-                db.execSQL(CREATE_DAILY_SPORT_AND_INTAKE_TABLE);
+            if (!tableExists(db, "meal_items")){
+                db.execSQL(CREATE_MEAL_ITEMS_TABLE);
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -131,9 +136,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try{
-            db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
-            db.execSQL("DROP TABLE IF EXISTS food_diary");
-            db.execSQL("DROP TABLE IF EXISTS food");
             onCreate(db);
 
             String TAG = "Tag";
@@ -181,33 +183,86 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("carbohydrates_total_g", foodItem.getCarbohydratesTotalG());
         values.put("fiber_g", foodItem.getFiberG());
         values.put("sugar_g", foodItem.getSugarG());
+        try{
+            long newRowId = db.insert("food", null, values);
 
-        long newRowId = db.insert("food", null, values);
-
-        Log.d("DatabaseHelper", "Inserted food item: " + foodItem.getName() +
-                        ", ROW ID: " + newRowId +
-                        ", Calories: " + foodItem.getCalories() +
-                        ", Serving Size g: " + foodItem.getServingSizeG()
-        );
-
-        db.close();
+            Log.d("DatabaseHelper", "Inserted food item: " + foodItem.getName() +
+                    ", ROW ID: " + newRowId +
+                    ", Calories: " + foodItem.getCalories() +
+                    ", Serving Size g: " + foodItem.getServingSizeG()
+            );
+        } catch (SQLException e){
+            Log.e("DatabaseHelper", "Error inserting food item: " + foodItem.getName(), e);
+        } finally {
+            db.close();
+        }
     }
 
-    public void createDailyLogIfNotExists() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM daily_logs WHERE date =?", new String[]{(String) DateFormat.format("yyyy-MM-dd", Calendar.getInstance().getTime())});
-        if (!cursor.moveToFirst()) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("date", (String) DateFormat.format("yyyy-MM-dd", Calendar.getInstance().getTime()));
-            contentValues.put("sport_id", -1);
-            contentValues.put("sport_calories", 0);
-            contentValues.put("sport_duration", 0);
-            contentValues.put("food_id", -1);
-            contentValues.put("food_calories", 0);
-            contentValues.put("food_quantity", 0);
-            db.insert("daily_logs", null, contentValues);
+    public List<foodItem> getAllFoods() {
+        List<foodItem> foodItems = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM food", null);
+        if (cursor!= null) {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") foodItem foodItem = new foodItem(
+                        cursor.getInt(cursor.getColumnIndex("id")),
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        cursor.getFloat(cursor.getColumnIndex("calories")),
+                        cursor.getFloat(cursor.getColumnIndex("serving_size_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fat_total_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fat_saturated_g")),
+                        cursor.getFloat(cursor.getColumnIndex("protein_g")),
+                        cursor.getInt(cursor.getColumnIndex("sodium_mg")),
+                        cursor.getInt(cursor.getColumnIndex("potassium_mg")),
+                        cursor.getInt(cursor.getColumnIndex("cholesterol_mg")),
+                        cursor.getFloat(cursor.getColumnIndex("carbohydrates_total_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fiber_g")),
+                        cursor.getFloat(cursor.getColumnIndex("sugar_g"))
+                );
+                foodItems.add(foodItem);
+            }
+            cursor.close();
         }
-        cursor.close();
+        return foodItems;
+    }
+
+
+
+    public List<foodItem> getAllMeals() {
+        List<foodItem> meals = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM food", null);
+
+        if (cursor!= null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") foodItem meal = new foodItem(
+                        cursor.getInt(cursor.getColumnIndex("id")),
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        cursor.getFloat(cursor.getColumnIndex("calories")),
+                        cursor.getFloat(cursor.getColumnIndex("serving_size_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fat_total_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fat_saturated_g")),
+                        cursor.getFloat(cursor.getColumnIndex("protein_g")),
+                        cursor.getInt(cursor.getColumnIndex("sodium_mg")),
+                        cursor.getInt(cursor.getColumnIndex("potassium_mg")),
+                        cursor.getInt(cursor.getColumnIndex("cholesterol_mg")),
+                        cursor.getFloat(cursor.getColumnIndex("carbohydrates_total_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fiber_g")),
+                        cursor.getFloat(cursor.getColumnIndex("sugar_g"))
+                );
+                meals.add(meal);
+
+                // Log each meal item as it's created
+                Log.d("MealItem", "Processing meal: " + meal.getName() + ", Row Index: " + cursor.getPosition());
+                Log.d("MealItem", "Calories: " + meal.getCalories() + ", Serving Size: " + meal.getServingSizeG());
+                Log.d("MealItem", "Added meal: " + meal.getName() + ", Calories: " + meal.getCalories());
+            } while (cursor.moveToNext());
+        }
+        if (cursor!= null) {
+            cursor.close();
+        }
+        return meals;
     }
 
 

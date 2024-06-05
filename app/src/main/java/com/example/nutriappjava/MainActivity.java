@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nutriappjava.classes.foodItem;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
             db = dbHelper.getReadableDatabase();
         }
 
+
+        listAllFoodsAndPrint();
+
         //dbHelper.clearTables(db);
 
 
@@ -51,5 +57,19 @@ public class MainActivity extends AppCompatActivity {
 
         db.close();
 
+    }
+
+    private void listAllFoodsAndPrint() {
+        dbHelper = new DatabaseHelper(this);
+        List<foodItem> foodItems = dbHelper.getAllFoods();
+
+        for (foodItem foodItem : foodItems) {
+            System.out.println(", Name: " + foodItem.getName() +
+                    ", Calories: " + foodItem.getCalories() +
+                    ", Protein: " + foodItem.getProteinG() +
+                    ", Carbohydrates: " + foodItem.getCarbohydratesTotalG() +
+                    ", Fat: " + foodItem.getFatSaturatedG()
+            );
+        }
     }
 }

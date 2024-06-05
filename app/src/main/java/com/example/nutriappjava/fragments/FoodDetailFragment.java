@@ -4,12 +4,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.nutriappjava.DatabaseHelper;
 import com.example.nutriappjava.R;
 
 public class FoodDetailFragment extends Fragment {
@@ -58,7 +61,22 @@ public class FoodDetailFragment extends Fragment {
 
 
         saveButton.setOnClickListener(v -> {
-            // Implement saving logic here
+            DatabaseHelper db = new DatabaseHelper(getContext());
+            db.insertFoodItem(foodItem);
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getName());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getCalories());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getServingSizeG());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getFatTotalG());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getFatSaturatedG());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getProteinG());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getSodiumMg());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getPotassiumMg());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getCholesterolMg());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getCarbohydratesTotalG());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getFiberG());
+            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getSugarG());
+            Toast.makeText(getContext(), "Food item saved", Toast.LENGTH_SHORT).show();
+            db.close();
         });
 
         return view;
