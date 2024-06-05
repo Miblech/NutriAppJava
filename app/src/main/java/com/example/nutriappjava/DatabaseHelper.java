@@ -1,21 +1,15 @@
 package com.example.nutriappjava;
 
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.icu.util.Calendar;
-import android.text.format.DateFormat;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.nutriappjava.classes.foodItem;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.example.nutriappjava.classes.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,45 +162,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertFoodItem(foodItem foodItem) {
+    @SuppressLint("Range")
+    public void insertFoodItem(FoodItem foodItem) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("name", foodItem.getName());
-        values.put("calories", foodItem.getCalories());
-        values.put("serving_size_g", foodItem.getServingSizeG());
-        values.put("fat_total_g", foodItem.getFatTotalG());
-        values.put("fat_saturated_g", foodItem.getFatSaturatedG());
-        values.put("protein_g", foodItem.getProteinG());
-        values.put("sodium_mg", foodItem.getSodiumMg());
-        values.put("potassium_mg", foodItem.getPotassiumMg());
-        values.put("cholesterol_mg", foodItem.getCholesterolMg());
-        values.put("carbohydrates_total_g", foodItem.getCarbohydratesTotalG());
-        values.put("fiber_g", foodItem.getFiberG());
-        values.put("sugar_g", foodItem.getSugarG());
-        try{
-            long newRowId = db.insert("food", null, values);
+        String sql = "INSERT INTO food (name, calories, serving_size_g, fat_total_g, fat_saturated_g, protein_g, sodium_mg, potassium_mg, cholesterol_mg, carbohydrates_total_g, fiber_g, sugar_g) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        SQLiteStatement stmt = db.compileStatement(sql);
 
-            Log.d("DatabaseHelper", "Inserted food item: " + foodItem.getName() +
-                    ", ROW ID: " + newRowId +
-                    ", Calories: " + foodItem.getCalories() +
-                    ", Serving Size g: " + foodItem.getServingSizeG()
-            );
-        } catch (SQLException e){
-            Log.e("DatabaseHelper", "Error inserting food item: " + foodItem.getName(), e);
+        try {
+            // Debugging each field
+            Log.d("DatabaseHelper", "Food item details - Name: " + foodItem.getName() + ", Calories: " + foodItem.getCalories() + ", Serving Size: " + foodItem.getServingSizeG() + ", Fat Total: " + foodItem.getFatTotalG() + ", Fat Saturated: " + foodItem.getFatSaturatedG() + ", Protein: " + foodItem.getProteinG() + ", Sodium: " + foodItem.getSodiumMg() + ", Potassium: " + foodItem.getPotassiumMg() + ", Cholesterol: " + foodItem.getCholesterolMg() + ", Carbohydrates: " + foodItem.getCarbohydratesTotalG() + ", Fiber: " + foodItem.getFiberG() + ", Sugar: " + foodItem.getSugarG());
+
+            stmt.bindString(1, foodItem.getName());
+            stmt.bindDouble(2, foodItem.getCalories());
+            stmt.bindDouble(3, foodItem.getServingSizeG());
+            stmt.bindDouble(4, foodItem.getFatTotalG());
+            stmt.bindDouble(5, foodItem.getFatSaturatedG());
+            stmt.bindDouble(6, foodItem.getProteinG());
+            stmt.bindDouble(7, foodItem.getSodiumMg());
+            stmt.bindDouble(8, foodItem.getPotassiumMg());
+            stmt.bindDouble(9, foodItem.getCholesterolMg());
+            stmt.bindDouble(10, foodItem.getCarbohydratesTotalG());
+            stmt.bindDouble(11, foodItem.getFiberG());
+            stmt.bindDouble(12, foodItem.getSugarG());
+
+            stmt.executeInsert();
+            Log.d("DatabaseHelper", "Successfully inserted food item: " + foodItem.getName());
+            Cursor cursor = db.rawQuery("SELECT * FROM food WHERE name = ?", new String[]{foodItem.getName()});
+            if (cursor.moveToFirst()) {
+                do {
+                    // Extraer y mostrar los datos para verificar
+                    Log.d("DatabaseHelper", "Retrieved food item - Name: " + cursor.getString(cursor.getColumnIndex("name")) + ", Calories: " + cursor.getDouble(cursor.getColumnIndex("calories")) + ", Serving Size: " + cursor.getDouble(cursor.getColumnIndex("serving_size_g")) + ", Fat Total: " + cursor.getDouble(cursor.getColumnIndex("fat_total_g")) + ", Fat Saturated: " + cursor.getDouble(cursor.getColumnIndex("fat_saturated_g")) + ", Protein: " + cursor.getDouble(cursor.getColumnIndex("protein_g")) + ", Sodium: " + cursor.getDouble(cursor.getColumnIndex("sodium_mg")) + ", Potassium: " + cursor.getDouble(cursor.getColumnIndex("potassium_mg")) + ", Cholesterol: " + cursor.getDouble(cursor.getColumnIndex("cholesterol_mg")) + ", Carbohydrates: " + cursor.getDouble(cursor.getColumnIndex("carbohydrates_total_g")) + ", Fiber: " + cursor.getDouble(cursor.getColumnIndex("fiber_g")) + ", Sugar: " + cursor.getDouble(cursor.getColumnIndex("sugar_g")));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (SQLException e) {
+            Log.e("DatabaseHelper", "Failed to insert food item: " + foodItem.getName(), e);
         } finally {
-            db.close();
+            stmt.clearBindings();
         }
     }
 
-    public List<foodItem> getAllFoods() {
-        List<foodItem> foodItems = new ArrayList<>();
+    public List<FoodItem> getAllFoods() {
+        List<FoodItem> FoodItems = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM food", null);
         if (cursor!= null) {
             while (cursor.moveToNext()) {
-                @SuppressLint("Range") foodItem foodItem = new foodItem(
-                        cursor.getInt(cursor.getColumnIndex("id")),
+                @SuppressLint("Range") FoodItem foodItem = new FoodItem(
                         cursor.getString(cursor.getColumnIndex("name")),
                         cursor.getFloat(cursor.getColumnIndex("calories")),
                         cursor.getFloat(cursor.getColumnIndex("serving_size_g")),
@@ -220,24 +223,71 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getFloat(cursor.getColumnIndex("fiber_g")),
                         cursor.getFloat(cursor.getColumnIndex("sugar_g"))
                 );
-                foodItems.add(foodItem);
+                FoodItems.add(foodItem);
             }
             cursor.close();
         }
-        return foodItems;
+        return FoodItems;
+    }
+    @SuppressLint("Range")
+    public FoodItem getFoodItem(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        FoodItem foodItem = null;
+
+        // Corrected SQL query to select by ID instead of name
+        Cursor cursor = db.rawQuery("SELECT * FROM food WHERE id=?", new String[]{String.valueOf(id)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String foodName = cursor.getString(cursor.getColumnIndex("name"));
+            double calories = cursor.getDouble(cursor.getColumnIndex("calories"));
+            double servingSizeG = cursor.getDouble(cursor.getColumnIndex("serving_size_g"));
+            double fatTotalG = cursor.getDouble(cursor.getColumnIndex("fat_total_g"));
+            double fatSaturatedG = cursor.getDouble(cursor.getColumnIndex("fat_saturated_g"));
+            double proteinG = cursor.getDouble(cursor.getColumnIndex("protein_g"));
+            double sodiumMg = cursor.getDouble(cursor.getColumnIndex("sodium_mg"));
+            double potassiumMg = cursor.getDouble(cursor.getColumnIndex("potassium_mg"));
+            double cholesterolMg = cursor.getDouble(cursor.getColumnIndex("cholesterol_mg"));
+            double carbohydratesTotalG = cursor.getDouble(cursor.getColumnIndex("carbohydrates_total_g"));
+            double fiberG = cursor.getDouble(cursor.getColumnIndex("fiber_g"));
+            double sugarG = cursor.getDouble(cursor.getColumnIndex("sugar_g"));
+            Log.d("DatabaseHelper", "Retrieved food item - Name: " + foodName + ", Calories: " + calories + ", Serving Size: " + servingSizeG + ", Fat Total: " + fatTotalG + ", Fat Saturated: " + fatSaturatedG + ", Protein: " + proteinG + ", Sodium: " + sodiumMg + ", Potassium: " + potassiumMg + ", Cholesterol: " + cholesterolMg + ", Carbohydrates: " + carbohydratesTotalG + ", Fiber: " + fiberG + ", Sugar: " + sugarG);
+
+            foodItem = new FoodItem(
+                    cursor.getString(cursor.getColumnIndex("name")),
+                    cursor.getFloat(cursor.getColumnIndex("calories")),
+                    cursor.getFloat(cursor.getColumnIndex("serving_size_g")),
+                    cursor.getFloat(cursor.getColumnIndex("fat_total_g")),
+                    cursor.getFloat(cursor.getColumnIndex("fat_saturated_g")),
+                    cursor.getFloat(cursor.getColumnIndex("protein_g")),
+                    cursor.getInt(cursor.getColumnIndex("sodium_mg")),
+                    cursor.getInt(cursor.getColumnIndex("potassium_mg")),
+                    cursor.getInt(cursor.getColumnIndex("cholesterol_mg")),
+                    cursor.getFloat(cursor.getColumnIndex("carbohydrates_total_g")),
+                    cursor.getFloat(cursor.getColumnIndex("fiber_g")),
+                    cursor.getFloat(cursor.getColumnIndex("sugar_g"))
+            );
+            Log.d("FoodDetailFragment", "Food item displayed: " + foodItem.getName() + ", Calories: " + foodItem.getCalories() + ", Serving Size: " + foodItem.getServingSizeG());
+
+        } else {
+            Log.d("DatabaseHelper", "No food item found with name: " + id);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+        return foodItem;
     }
 
-
-
-    public List<foodItem> getAllMeals() {
-        List<foodItem> meals = new ArrayList<>();
+    public List<FoodItem> getAllMeals() {
+        List<FoodItem> meals = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM food", null);
 
         if (cursor!= null && cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") foodItem meal = new foodItem(
-                        cursor.getInt(cursor.getColumnIndex("id")),
+                @SuppressLint("Range") FoodItem meal = new FoodItem(
                         cursor.getString(cursor.getColumnIndex("name")),
                         cursor.getFloat(cursor.getColumnIndex("calories")),
                         cursor.getFloat(cursor.getColumnIndex("serving_size_g")),

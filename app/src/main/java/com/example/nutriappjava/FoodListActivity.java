@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.example.nutriappjava.adapters.FoodListAdapter;
-import com.example.nutriappjava.classes.foodItem;
+import com.example.nutriappjava.classes.FoodItem;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class FoodListActivity extends AppCompatActivity {
 
 
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(this);
-        List<foodItem> foodItems = dbHelper.getAllMeals();
-        foodAdapter.setFoodItems(foodItems);
+        List<FoodItem> FoodItems = dbHelper.getAllMeals();
+        foodAdapter.setFoodItems(FoodItems);
     }
 }

@@ -14,20 +14,21 @@ import android.widget.Toast;
 
 import com.example.nutriappjava.DatabaseHelper;
 import com.example.nutriappjava.R;
+import com.example.nutriappjava.classes.FoodItem;
 
 public class FoodDetailFragment extends Fragment {
 
-    private com.example.nutriappjava.classes.foodItem foodItem;
+    private FoodItem foodItem;
     private TextView nameTextView, caloriesTextView, servingSizeTextView, fatTotalTextView, fatSaturatedTextView, proteinTextView, sodiumTextView, potassiumTextView, cholesterolTextView, carbohydratesTotalTextView, fiberTextView, sugarTextView;
     private Button saveButton;
 
     public FoodDetailFragment() {
     }
 
-    public static FoodDetailFragment newInstance(com.example.nutriappjava.classes.foodItem foodItem) {
+    public static FoodDetailFragment newInstance(FoodItem foodItem) {
         FoodDetailFragment fragment = new FoodDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("foodItem", foodItem);
+        args.putParcelable("FoodItem", foodItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +55,7 @@ public class FoodDetailFragment extends Fragment {
 
 
         if (getArguments()!= null) {
-            foodItem = getArguments().getParcelable("foodItem");
+            foodItem = getArguments().getParcelable("FoodItem");
 
             setupUI();
         }

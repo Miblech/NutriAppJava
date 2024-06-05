@@ -3,7 +3,7 @@ package com.example.nutriappjava.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class foodItem implements Parcelable {
+public class FoodItem implements Parcelable {
     private String name;
     private double calories;
     private double servingSizeG;
@@ -17,10 +17,10 @@ public class foodItem implements Parcelable {
     private double fiberG;
     private double sugarG;
 
-    public foodItem() {
+    public FoodItem() {
     }
 
-    public foodItem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
+    public FoodItem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
         this.name = name;
         this.calories = calories;
         this.servingSizeG = servingSizeG;
@@ -36,7 +36,7 @@ public class foodItem implements Parcelable {
     }
 
 
-    protected foodItem(Parcel in) {
+    protected FoodItem(Parcel in) {
         name = in.readString();
         calories = in.readDouble();
         servingSizeG = in.readDouble();
@@ -51,19 +51,19 @@ public class foodItem implements Parcelable {
         sugarG = in.readDouble();
     }
 
-    public static final Creator<foodItem> CREATOR = new Creator<foodItem>() {
+    public static final Creator<FoodItem> CREATOR = new Creator<FoodItem>() {
         @Override
-        public foodItem createFromParcel(Parcel in) {
-            return new foodItem(in);
+        public FoodItem createFromParcel(Parcel in) {
+            return new FoodItem(in);
         }
 
         @Override
-        public foodItem[] newArray(int size) {
-            return new foodItem[size];
+        public FoodItem[] newArray(int size) {
+            return new FoodItem[size];
         }
     };
 
-    public foodItem(int id, String name, float calories, float servingSizeG, float fatTotalG, float fatSaturatedG, float proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, float carbohydratesTotalG, float fiberG, float sugarG) {
+    public FoodItem(int id, String name, float calories, float servingSizeG, float fatTotalG, float fatSaturatedG, float proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, float carbohydratesTotalG, float fiberG, float sugarG) {
     }
 
 

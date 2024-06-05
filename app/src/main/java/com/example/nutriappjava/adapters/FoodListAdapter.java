@@ -10,13 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nutriappjava.R;
-import com.example.nutriappjava.classes.foodItem;
+import com.example.nutriappjava.classes.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder> {
-    private List<foodItem> foodItems;
+    private List<FoodItem> FoodItems;
 
     public static class FoodListViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
@@ -30,12 +30,12 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodLi
     }
 
     public FoodListAdapter() {
-        this.foodItems = new ArrayList<>();
+        this.FoodItems = new ArrayList<>();
     }
 
-    public void setFoodItems(List<foodItem> foodItems) {
-        this.foodItems.clear();
-        this.foodItems.addAll(foodItems);
+    public void setFoodItems(List<FoodItem> FoodItems) {
+        this.FoodItems.clear();
+        this.FoodItems.addAll(FoodItems);
         notifyDataSetChanged();
     }
 
@@ -48,7 +48,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodLi
 
     @Override
     public void onBindViewHolder(@NonNull FoodListViewHolder holder, int position) {
-        foodItem currentItem = foodItems.get(position);
+        FoodItem currentItem = FoodItems.get(position);
         if (holder.nameTextView!= null && holder.caloriesTextView!= null) {
             holder.nameTextView.setText(currentItem.getName());
             holder.caloriesTextView.setText(String.valueOf(currentItem.getCalories()));
@@ -59,6 +59,6 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodLi
 
     @Override
     public int getItemCount() {
-        return foodItems.size();
+        return FoodItems.size();
     }
 }

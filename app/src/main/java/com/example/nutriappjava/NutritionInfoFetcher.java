@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 
 import com.example.nutriappjava.adapters.FoodAdapter;
-import com.example.nutriappjava.classes.foodItem;
+import com.example.nutriappjava.classes.FoodItem;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>> {
+public class NutritionInfoFetcher extends AsyncTask<String, Void, List<FoodItem>> {
     private DatabaseHelper dbHelper;
     private FoodAdapter foodAdapter;
 
@@ -35,8 +35,8 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
     private static final String NUTRITION_API_URL = "https://api.api-ninjas.com/v1/nutrition";
 
     @Override
-    protected List<foodItem> doInBackground(String... params) {
-        List<foodItem> foodItems = new ArrayList<>();
+    protected List<FoodItem> doInBackground(String... params) {
+        List<FoodItem> FoodItems = new ArrayList<>();
         try {
 
             String query = params[0];
@@ -62,7 +62,7 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject food = jsonArray.getJSONObject(i);
-                    foodItem foodItem = new foodItem(
+                    FoodItem foodItem = new FoodItem(
                             food.getString("name"),
                             food.getDouble("calories"),
                             food.getDouble("serving_size_g"),
@@ -76,7 +76,7 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
                             food.getDouble("fiber_g"),
                             food.getDouble("sugar_g")
                     );
-                    foodItems.add(foodItem);
+                    FoodItems.add(foodItem);
                 }
             } else {
                 Log.e("API CALL", "Failed to fetch nutrition data. Response code: " + responseCode);
@@ -84,14 +84,14 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<foodItem>
         } catch (Exception e) {
             Log.e("API CALL", "Error fetching nutrition data", e);
         }
-        return foodItems;
+        return FoodItems;
     }
 
     @Override
-    protected void onPostExecute(List<foodItem> foodItems) {
-        super.onPostExecute(foodItems);
-        if (foodItems!= null &&!foodItems.isEmpty()) {
-            foodAdapter.updateData(foodItems);
+    protected void onPostExecute(List<FoodItem> FoodItems) {
+        super.onPostExecute(FoodItems);
+        if (FoodItems != null &&!FoodItems.isEmpty()) {
+            foodAdapter.updateData(FoodItems);
         } else {
             Toast.makeText(foodAdapter.getContext(), "No results found", Toast.LENGTH_SHORT).show();
         }

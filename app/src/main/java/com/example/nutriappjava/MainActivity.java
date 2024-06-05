@@ -2,24 +2,13 @@ package com.example.nutriappjava;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.example.nutriappjava.classes.foodItem;
+import com.example.nutriappjava.classes.FoodItem;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.Base64;
 import java.util.List;
-
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         listAllFoodsAndPrint();
-
+        dbHelper.getFoodItem(4);
         //dbHelper.clearTables(db);
 
 
@@ -61,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void listAllFoodsAndPrint() {
         dbHelper = new DatabaseHelper(this);
-        List<foodItem> foodItems = dbHelper.getAllFoods();
+        List<FoodItem> FoodItems = dbHelper.getAllFoods();
 
-        for (foodItem foodItem : foodItems) {
+        for (FoodItem foodItem : FoodItems) {
             System.out.println(", Name: " + foodItem.getName() +
                     ", Calories: " + foodItem.getCalories() +
                     ", Protein: " + foodItem.getProteinG() +
