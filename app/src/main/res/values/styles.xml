@@ -1,0 +1,6 @@
+<resources>
+    <style name="SquareLightBlueButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/square_light_blue_background</item>
+        <item name="android:shape">rectangle</item>
+    </style>
+</resources>

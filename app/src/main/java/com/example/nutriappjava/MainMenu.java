@@ -1,7 +1,16 @@
 package com.example.nutriappjava;
 
+import static com.example.nutriappjava.R.*;
+
+
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,44 +35,69 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(layout.activity_main_menu);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        Toolbar toolbar = findViewById(id.toolbar);
+        drawerLayout = findViewById(id.drawer_layout);
+        NavigationView navigationView = findViewById(id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, string.open_nav, string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "username");
+        String email = sharedPreferences.getString("email", "email");
+
+        TextView usernameTextView = headerView.findViewById(R.id.header_username);
+        TextView emailTextView = headerView.findViewById(R.id.header_email);
+        Log.d("MainMenu", "Found usernameTextView: " + (usernameTextView!= null? "Yes" : "No"));
+        Log.d("MainMenu", "Found emailTextView: " + (emailTextView!= null? "Yes" : "No"));
+
+        if (usernameTextView!= null) {
+            Log.d("MainMenu", "Setting username: " + username);
+            usernameTextView.setText(username);
+        } else {
+            Log.e("MainMenu", "usernameTextView is null");
+        }
+
+        if (emailTextView!= null) {
+            Log.d("MainMenu", "Setting email: " + email);
+            emailTextView.setText(email);
+        } else {
+            Log.e("MainMenu", "emailTextView is null");
+        }
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment()).commit();
+            navigationView.setCheckedItem(id.nav_home);
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.nav_home) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_profile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_food) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FoodFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_logs) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LogsFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_add_logs) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddLogsFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_info) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_logout) {
-
-            // TODO: Implement logout
+        if (item.getItemId() == id.nav_home) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment()).commit();
+        } else if (item.getItemId() == id.nav_profile) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new ProfileFragment()).commit();
+        } else if (item.getItemId() == id.nav_food) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new FoodFragment()).commit();
+        } else if (item.getItemId() == id.nav_logs) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new LogsFragment()).commit();
+        } else if (item.getItemId() == id.nav_add_logs) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new AddLogsFragment()).commit();
+        } else if (item.getItemId() == id.nav_settings) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new SettingsFragment()).commit();
+        } else if (item.getItemId() == id.nav_info) {
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new AboutFragment()).commit();
+        } else if (item.getItemId() == id.nav_logout) {
+            Intent intent = new Intent(MainMenu.this, Login.class);
+            startActivity(intent);
+            finish();
         }
-        drawerLayout.closeDrawer((NavigationView) findViewById(R.id.nav_view));
+        drawerLayout.closeDrawer((NavigationView) findViewById(id.nav_view));
         return true;
     }
 

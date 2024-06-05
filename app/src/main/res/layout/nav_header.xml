@@ -15,7 +15,7 @@
         android:src="@drawable/ic_person" />
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/header_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="USERNAME"
@@ -23,7 +23,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/header_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
