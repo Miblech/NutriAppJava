@@ -315,6 +315,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return meals;
     }
 
+    public List<FoodItem> SearchFoodsByName(String name) {
+        List<FoodItem> foodItems = new ArrayList<>();
+        System.out.println("Searching for " + name);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM food WHERE name LIKE?", new String[]{"%" + name + "%"});
+        if (cursor!= null) {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") FoodItem foodItem = new FoodItem(
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        cursor.getFloat(cursor.getColumnIndex("calories")),
+                        cursor.getFloat(cursor.getColumnIndex("serving_size_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fat_total_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fat_saturated_g")),
+                        cursor.getFloat(cursor.getColumnIndex("protein_g")),
+                        cursor.getInt(cursor.getColumnIndex("sodium_mg")),
+                        cursor.getInt(cursor.getColumnIndex("potassium_mg")),
+                        cursor.getInt(cursor.getColumnIndex("cholesterol_mg")),
+                        cursor.getFloat(cursor.getColumnIndex("carbohydrates_total_g")),
+                        cursor.getFloat(cursor.getColumnIndex("fiber_g")),
+                        cursor.getFloat(cursor.getColumnIndex("sugar_g"))
+                );
+                System.out.println(foodItem.getName());
+                System.out.println(foodItem.getCalories());
+                System.out.println(foodItem.getServingSizeG());
+                System.out.println(foodItem.getFatTotalG());
+                System.out.println(foodItem.getFatSaturatedG());
+                System.out.println(foodItem.getProteinG());
+                System.out.println(foodItem.getSodiumMg());
+                System.out.println(foodItem.getPotassiumMg());
+                System.out.println(foodItem.getCholesterolMg());
+                System.out.println(foodItem.getCarbohydratesTotalG());
+                System.out.println(foodItem.getFiberG());
+                System.out.println(foodItem.getSugarG());
+                foodItems.add(foodItem);
+            }
+            cursor.close();
+        }
+        return foodItems;
+    }
+
 
     public int countRows(SQLiteDatabase db, String tableName) {
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + tableName, null);
