@@ -1,4 +1,4 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.example.nutriappjava.DatabaseHelper;
+import com.example.nutriappjava.R;
 import com.example.nutriappjava.classes.FoodItem;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.activities;
 
 import static com.example.nutriappjava.SecurityUtils.hashPassword;
 
@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nutriappjava.DatabaseHelper;
+import com.example.nutriappjava.R;
+import com.example.nutriappjava.SecurityUtils;
 import com.example.nutriappjava.classes.User;
 
 import java.security.NoSuchAlgorithmException;

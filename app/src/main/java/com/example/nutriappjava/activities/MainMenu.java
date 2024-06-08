@@ -1,4 +1,4 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.activities;
 
 import static com.example.nutriappjava.R.*;
 
@@ -19,6 +19,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.nutriappjava.DatabaseHelper;
+import com.example.nutriappjava.R;
 import com.example.nutriappjava.fragments.AboutFragment;
 import com.example.nutriappjava.fragments.AddLogsFragment;
 import com.example.nutriappjava.fragments.FoodFragment;

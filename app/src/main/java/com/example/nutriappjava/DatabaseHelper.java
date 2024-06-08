@@ -367,4 +367,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return count;
     }
+
+    public String getStoredSalt(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT salt FROM user WHERE id=?", new String[]{String.valueOf(userId)});
+        String salt = "";
+        if (cursor!= null) {
+            if (cursor.moveToFirst()) {
+                salt = cursor.getString(0);
+            }
+            cursor.close();
+        }
+        return salt;
+    }
+
+    public String getStoredHashedPassword(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT hashed_password FROM user WHERE id=?", new String[]{String.valueOf(userId)});
+        String hashedPassword = "";
+        if (cursor!= null) {
+            if (cursor.moveToFirst()) {
+                hashedPassword = cursor.getString(0);
+            }
+            cursor.close();
+        }
+        return hashedPassword;
+    }
+
+    public void updatePassword(int userId, String hashedNewPassword, String salt) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE user SET hashed_password=?, salt=? WHERE id=?", new String[]{hashedNewPassword, salt, String.valueOf(userId)});
+    }
 }
