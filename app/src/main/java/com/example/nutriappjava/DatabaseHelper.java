@@ -398,4 +398,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("UPDATE user SET hashed_password=?, salt=? WHERE id=?", new String[]{hashedNewPassword, salt, String.valueOf(userId)});
     }
+
+    public boolean hasLogForToday(int currentUserId, String currentDate) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM daily_log WHERE user_id=? AND date=?", new String[]{String.valueOf(currentUserId), currentDate});
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        } else {
+            cursor.close();
+            return false;
+        }
+    }
 }

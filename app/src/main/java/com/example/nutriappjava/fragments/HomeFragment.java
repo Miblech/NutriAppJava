@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.example.nutriappjava.DatabaseHelper;
 import com.example.nutriappjava.R;
 
+import java.text.SimpleDateFormat;
+
 public class HomeFragment extends Fragment {
 
     private DatabaseHelper dbHelper;
@@ -38,7 +40,21 @@ public class HomeFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
         int currentUserId = sharedPreferences.getInt("userId", -1);
 
-        if (currentUserId!= -1) {;
+        if (currentUserId!= -1) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String currentDate = sdf.format(new java.util.Date());
+            boolean hasLogForToday = dbHelper.hasLogForToday(currentUserId, currentDate);
+
+            if (hasLogForToday) {
+                home_recyclerView.setVisibility(View.VISIBLE);
+                home_add_meal.setVisibility(View.VISIBLE);
+            } else {
+                home_username.setText("Hello " + sharedPreferences.getString("username", ""));
+                home_date.setText("You have no log made for today. Add a meal to get started.");
+                home_recyclerView.setVisibility(View.GONE);
+                home_add_meal.setVisibility(View.VISIBLE);
+            }
+
         } else {
             home_recyclerView.setVisibility(View.GONE);
             home_add_meal.setVisibility(View.GONE);
