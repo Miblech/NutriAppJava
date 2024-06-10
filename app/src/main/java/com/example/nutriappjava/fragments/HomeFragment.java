@@ -1,6 +1,7 @@
 package com.example.nutriappjava.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -12,12 +13,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.example.nutriappjava.DatabaseHelper;
 import com.example.nutriappjava.R;
+import com.example.nutriappjava.activities.CreateLogActivity;
 
 import java.text.SimpleDateFormat;
 
 public class HomeFragment extends Fragment {
 
     private DatabaseHelper dbHelper;
+
+    public HomeFragment() {
+    }
 
     public HomeFragment(DatabaseHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -59,6 +64,14 @@ public class HomeFragment extends Fragment {
             home_recyclerView.setVisibility(View.GONE);
             home_add_meal.setVisibility(View.GONE);
         }
+
+        home_add_meal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CreateLogActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

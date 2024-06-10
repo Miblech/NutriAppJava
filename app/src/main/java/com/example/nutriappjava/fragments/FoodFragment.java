@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nutriappjava.DatabaseHelper;
-import com.example.nutriappjava.adapters.FoodAdapter;
+import com.example.nutriappjava.adapters.FoodSearchAdapter;
 import com.example.nutriappjava.NutritionInfoFetcher;
 import com.example.nutriappjava.R;
 
@@ -26,7 +26,7 @@ public class FoodFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button searchButton;
     private DatabaseHelper dbHelper;
-    private FoodAdapter foodAdapter;
+    private FoodSearchAdapter foodSearchAdapter;
 
     private Spinner unitSpinner;
     private String defaultUnit = "g";
@@ -47,8 +47,8 @@ public class FoodFragment extends Fragment {
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        foodAdapter = new FoodAdapter(null, getContext());
-        recyclerView.setAdapter(foodAdapter);
+        foodSearchAdapter = new FoodSearchAdapter(null, getContext());
+        recyclerView.setAdapter(foodSearchAdapter);
 
         unitSpinner = view.findViewById(R.id.unit_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -79,7 +79,7 @@ public class FoodFragment extends Fragment {
             System.out.println(query);
 
             if (!query.isEmpty()) {
-                NutritionInfoFetcher nutritionInfoFetcher = new NutritionInfoFetcher(foodAdapter);
+                NutritionInfoFetcher nutritionInfoFetcher = new NutritionInfoFetcher(foodSearchAdapter);
                 nutritionInfoFetcher.executeOnExecutor(android.os.AsyncTask.THREAD_POOL_EXECUTOR, query);
             } else {
                 Toast.makeText(getContext(), "Please enter a search term.", Toast.LENGTH_SHORT).show();

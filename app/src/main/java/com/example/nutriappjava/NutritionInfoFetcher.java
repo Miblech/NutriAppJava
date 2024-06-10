@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-import com.example.nutriappjava.adapters.FoodAdapter;
+import com.example.nutriappjava.adapters.FoodSearchAdapter;
 import com.example.nutriappjava.classes.FoodItem;
 
 import org.json.JSONArray;
@@ -23,11 +23,11 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class NutritionInfoFetcher extends AsyncTask<String, Void, List<FoodItem>> {
     private DatabaseHelper dbHelper;
-    private FoodAdapter foodAdapter;
+    private FoodSearchAdapter foodSearchAdapter;
 
 
-    public NutritionInfoFetcher(FoodAdapter foodAdapter) {
-        this.foodAdapter = foodAdapter;
+    public NutritionInfoFetcher(FoodSearchAdapter foodSearchAdapter) {
+        this.foodSearchAdapter = foodSearchAdapter;
     }
 
 
@@ -91,9 +91,9 @@ public class NutritionInfoFetcher extends AsyncTask<String, Void, List<FoodItem>
     protected void onPostExecute(List<FoodItem> FoodItems) {
         super.onPostExecute(FoodItems);
         if (FoodItems != null &&!FoodItems.isEmpty()) {
-            foodAdapter.updateData(FoodItems);
+            foodSearchAdapter.updateData(FoodItems);
         } else {
-            Toast.makeText(foodAdapter.getContext(), "No results found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(foodSearchAdapter.getContext(), "No results found", Toast.LENGTH_SHORT).show();
         }
     }
 }

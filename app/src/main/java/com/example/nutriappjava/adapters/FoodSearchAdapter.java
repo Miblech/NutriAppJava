@@ -1,7 +1,6 @@
 package com.example.nutriappjava.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.classes.FoodItem;
-import com.example.nutriappjava.fragments.AddLogsFragment;
+import com.example.nutriappjava.fragments.FoodDetailFragment;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +24,14 @@ public class FoodSearchAdapter extends RecyclerView.Adapter<FoodSearchAdapter.Vi
     private List<FoodItem> foodItemList;
     private Context context;
 
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(FoodItem item);
+    public FoodSearchAdapter(Context context) {
+        this.context = context;
+        this.foodItemList = new ArrayList<>();
     }
 
-    public FoodSearchAdapter(List<FoodItem> foodItemList, Context context, OnItemClickListener listener) {
+    public FoodSearchAdapter(List<FoodItem> foodItemList, Context context) {
         this.foodItemList = foodItemList!= null? new ArrayList<>(foodItemList) : new ArrayList<>();
         this.context = context;
-        this.listener = listener; // Store the passed listener
     }
 
     @NonNull
@@ -48,25 +43,7 @@ public class FoodSearchAdapter extends RecyclerView.Adapter<FoodSearchAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final FoodItem foodItem = foodItemList.get(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Prepare to navigate to AddLogsFragment and pass the selected item
-                Bundle args = new Bundle();
-                args.putSerializable("selectedItem", (Serializable) foodItem);
-
-                AddLogsFragment addLogsFragment = new AddLogsFragment();
-                addLogsFragment.setArguments(args); // Pass the bundle to AddLogsFragment
-
-                // Replace the current fragment with AddLogsFragment
-                FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, addLogsFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        FoodItem foodItem = foodItemList.get(position);
         holder.bind(foodItem);
     }
 
@@ -113,23 +90,41 @@ public class FoodSearchAdapter extends RecyclerView.Adapter<FoodSearchAdapter.Vi
             Log.d("FoodSearchAdapter", "Fiber: " + foodItem.getFiberG());
             Log.d("FoodSearchAdapter", "Sugar: " + foodItem.getSugarG());
             nameTextView.setText(foodItem.getName());
-            caloriesTextView.setText("Calories: " + String.valueOf(foodItem.getCalories()));
-            servingSizeTextView.setText("Serving Size: " + String.valueOf(foodItem.getServingSizeG()));
-            fatTotalTextView.setText("Fat Total: " + String.valueOf(foodItem.getFatTotalG()));
-            fatSaturatedTextView.setText("Fat Saturated: " + String.valueOf(foodItem.getFatSaturatedG()));
-            proteinTextView.setText("Protein: " + String.valueOf(foodItem.getProteinG()));
-            sodiumTextView.setText("Sodium: " + String.valueOf(foodItem.getSodiumMg()));
-            potassiumTextView.setText("Potassium: " + String.valueOf(foodItem.getPotassiumMg()));
-            cholesterolTextView.setText("Cholesterol: " + String.valueOf(foodItem.getCholesterolMg()));
-            carbohydratesTotalTextView.setText("Carbohydrates Total: " + String.valueOf(foodItem.getCarbohydratesTotalG()));
-            fiberTextView.setText("Fiber: " + String.valueOf(foodItem.getFiberG()));
-            sugarTextView.setText("Sugar: " + String.valueOf(foodItem.getSugarG()));
+            String caloriesText = String.format("Calories: %s calories", foodItem.getCalories());
+            String servingSizeText = String.format("Serving Size: %.2f g", foodItem.getServingSizeG());
+            String fatTotalText = String.format("Fat Total: %.2f g", foodItem.getFatTotalG());
+            String fatSaturatedText = String.format("Fat Saturated: %.2f g", foodItem.getFatSaturatedG());
+            String proteinText = String.format("Protein: %.2f g", foodItem.getProteinG());
+            String sodiumText = String.format("Sodium: %d mg", foodItem.getSodiumMg());
+            String potassiumText = String.format("Potassium: %d mg", foodItem.getPotassiumMg());
+            String cholesterolText = String.format("Cholesterol: %d mg", foodItem.getCholesterolMg());
+            String carbohydratesTotalText = String.format("Carbohydrates Total: %.2f g", foodItem.getCarbohydratesTotalG());
+            String fiberText = String.format("Fiber: %.2f g", foodItem.getFiberG());
+            String sugarText = String.format("Sugar: %.2f g", foodItem.getSugarG());
+
+
+            caloriesTextView.setText(caloriesText);
+            servingSizeTextView.setText(servingSizeText);
+            fatTotalTextView.setText(fatTotalText);
+            fatSaturatedTextView.setText(fatSaturatedText);
+            proteinTextView.setText(proteinText);
+            sodiumTextView.setText(sodiumText);
+            potassiumTextView.setText(potassiumText);
+            cholesterolTextView.setText(cholesterolText);
+            carbohydratesTotalTextView.setText(carbohydratesTotalText);
+            fiberTextView.setText(fiberText);
+            sugarTextView.setText(sugarText);
         }
 
         @Override
         public void onClick(View v) {
             FoodItem clickedFoodItem = foodItemList.get(getAdapterPosition());
 
+            FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            FoodDetailFragment newInstance = FoodDetailFragment.newInstance(clickedFoodItem);
+            transaction.replace(R.id.fragment_container, newInstance);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 
@@ -141,3 +136,5 @@ public class FoodSearchAdapter extends RecyclerView.Adapter<FoodSearchAdapter.Vi
         notifyDataSetChanged();
     }
 }
+
+

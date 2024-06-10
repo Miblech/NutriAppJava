@@ -24,8 +24,8 @@
 
     <string-array name="meals_categories">
         <item>Breakfast</item>
-        <item>Dinner</item>
         <item>Lunch</item>
+        <item>Dinner</item>
     </string-array>
 
 

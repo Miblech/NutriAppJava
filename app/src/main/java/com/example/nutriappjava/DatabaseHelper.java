@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance;
     private static final String DATABASE_NAME = "myDatabase.db";
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 25;
 
     String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +

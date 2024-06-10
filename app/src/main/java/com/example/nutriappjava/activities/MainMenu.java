@@ -22,7 +22,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.nutriappjava.DatabaseHelper;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.fragments.AboutFragment;
-import com.example.nutriappjava.fragments.AddLogsFragment;
 import com.example.nutriappjava.fragments.FoodFragment;
 import com.example.nutriappjava.fragments.HomeFragment;
 import com.example.nutriappjava.fragments.LogsFragment;
@@ -88,8 +87,6 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new FoodFragment()).commit();
         } else if (item.getItemId() == id.nav_logs) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new LogsFragment()).commit();
-        } else if (item.getItemId() == id.nav_add_logs) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new AddLogsFragment()).commit();
         } else if (item.getItemId() == id.nav_settings) {
             getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new SettingsFragment()).commit();
         } else if (item.getItemId() == id.nav_info) {
