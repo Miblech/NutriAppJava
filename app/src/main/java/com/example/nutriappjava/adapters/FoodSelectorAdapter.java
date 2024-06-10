@@ -37,14 +37,9 @@ public class FoodSelectorAdapter extends RecyclerView.Adapter<FoodSelectorAdapte
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         FoodItem currentItem = foodItemList.get(position);
         holder.name.setText(currentItem.getName());
-        holder.servingSize.setText(String.valueOf(currentItem.getServingSizeG()));
+        holder.servingSize.setText(String.valueOf(currentItem.getServingSizeG()) + " g");
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(currentItem);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(currentItem));
     }
 
     @Override

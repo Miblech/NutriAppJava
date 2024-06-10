@@ -53,23 +53,15 @@ public class SignUp extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    signUpUser();
-                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                    e.printStackTrace();
-                }
+        signUpButton.setOnClickListener(v -> {
+            try {
+                signUpUser();
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                e.printStackTrace();
             }
         });
 
-        datePickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
+        datePickerButton.setOnClickListener(v -> showDatePickerDialog());
     }
 
     private void showDatePickerDialog() {
@@ -80,14 +72,11 @@ public class SignUp extends AppCompatActivity {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 SignUp.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String formattedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth);
-                        selectedDate = formattedDate;
-                        dateTextView.setText(formattedDate);
-                        Log.d("SELECTED DATE ", formattedDate);
-                    }
+                (view, year1, month1, dayOfMonth) -> {
+                    String formattedDate = String.format("%d-%02d-%02d", year1, month1 + 1, dayOfMonth);
+                    selectedDate = formattedDate;
+                    dateTextView.setText(formattedDate);
+                    Log.d("SELECTED DATE ", formattedDate);
                 },
                 year, month, day
         );
@@ -167,14 +156,6 @@ public class SignUp extends AppCompatActivity {
 
         if (newRowId != -1) {
             Toast.makeText(this, "User inserted successfully", Toast.LENGTH_SHORT).show();
-            System.out.println("User username : " + user.getUserUsername());
-            System.out.println("User email : " + user.getUserEmail());
-            System.out.println("User password : " + user.getUserHashPassword());
-            System.out.println("User salt : " + user.getUserSalt());
-            System.out.println("User dob : " + user.getUserDob());
-            System.out.println("User gender : " + user.getUserGender());
-            System.out.println("User height : " + user.getUserHeight());
-            System.out.println("User weight : " + user.getUserWeight());
 
             Intent intent = new Intent(SignUp.this, MainActivity.class);
             startActivity(intent);

@@ -47,12 +47,9 @@ public class HomeFragment extends Fragment {
         home_add_meal = view.findViewById(R.id.button_add_meal);
         noLogsTextHomeView = view.findViewById(R.id.no_logs_text_view_home);
 
-        home_add_meal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CreateLogActivity.class);
-                startActivity(intent);
-            }
+        home_add_meal.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CreateLogActivity.class);
+            startActivity(intent);
         });
 
         return view;

@@ -28,13 +28,12 @@ public class LogsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_logs, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewLogs);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Get the current user ID
         int userId = getCurrentUserId();
 
         DatabaseHelper dbHelper = new DatabaseHelper(getActivity());

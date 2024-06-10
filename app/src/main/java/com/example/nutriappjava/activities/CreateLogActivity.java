@@ -82,48 +82,47 @@ public class CreateLogActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         addMealButton = findViewById(R.id.buttonAddMeal);
-        addMealButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreateLogActivity.this, AddFoodActivity.class);
-                addFoodActivityResultLauncher.launch(intent);
-            }
+        addMealButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CreateLogActivity.this, AddFoodActivity.class);
+            addFoodActivityResultLauncher.launch(intent);
         });
 
         submitLog = findViewById(R.id.buttonSubmitLog);
-        submitLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-                int userId = sharedPreferences.getInt("userId", -1);
-                String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new java.util.Date());
-                String selectedTime = getTimeFromTimePicker();
-                String selectedCategory = spinner.getSelectedItem().toString();
+        submitLog.setOnClickListener(v -> {
 
-                DatabaseHelper dbHelper = new DatabaseHelper(CreateLogActivity.this);
-                long logId = dbHelper.insertDailyLog(userId, currentDate, selectedTime, selectedCategory);
+            SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
-                if (logId != -1) {
-                    for (FoodItem item : selectedItems) {
-                        int foodItemId = item.getId();
-                        System.out.println("Food Item with Name = " + item.getName() + " and ID = " + foodItemId);
-                        dbHelper.insertMealItem((int) logId, foodItemId);
-                        Log.d("CreateLogActivity", "Added meal item: " + item.getName());
-                        Log.d("CreateLogActivity", "Added meal calories: " + item.getCalories());
-                    }
-                    printLog(selectedItems);
-                    dbHelper.printAllDailyLogsForUserAndDate(userId, currentDate);
-                    finish();
-                } else {
-                    Log.e("CreateLogActivity", "Failed to insert log entry");
+            int userId = sharedPreferences.getInt("userId", -1);
+
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new java.util.Date());
+
+            String selectedTime = getTimeFromTimePicker();
+
+            String selectedCategory = spinner.getSelectedItem().toString();
+
+            DatabaseHelper dbHelper = new DatabaseHelper(CreateLogActivity.this);
+
+            long logId = dbHelper.insertDailyLog(userId, currentDate, selectedTime, selectedCategory);
+
+            if (logId != -1) {
+                for (FoodItem item : selectedItems) {
+                    int foodItemId = item.getId();
+                    System.out.println("Food Item with Name = " + item.getName() + " and ID = " + foodItemId);
+                    dbHelper.insertMealItem((int) logId, foodItemId);
+                    Log.d("CreateLogActivity", "Added meal item: " + item.getName());
+                    Log.d("CreateLogActivity", "Added meal calories: " + item.getCalories());
                 }
+                printLog(selectedItems);
+                dbHelper.printAllDailyLogsForUserAndDate(userId, currentDate);
+                finish();
+            } else {
+                Log.e("CreateLogActivity", "Failed to insert log entry");
             }
         });
     }
     private void printLog(List<FoodItem> items) {
         for (FoodItem item : items) {
             Log.d("LogItem", "Name: " + item.getName() + ", Calories: " + item.getCalories());
-            // Print other details if needed
         }
     }
 }

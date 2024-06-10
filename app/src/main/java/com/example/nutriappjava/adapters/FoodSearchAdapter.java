@@ -77,18 +77,6 @@ public class FoodSearchAdapter extends RecyclerView.Adapter<FoodSearchAdapter.Vi
         }
 
         public void bind(FoodItem foodItem) {
-            Log.d("FoodSearchAdapter", "Name: " + foodItem.getName());
-            Log.d("FoodSearchAdapter", "Calories: " + foodItem.getCalories());
-            Log.d("FoodSearchAdapter", "Serving Size in grams : " + foodItem.getServingSizeG());
-            Log.d("FoodSearchAdapter", "Fat Total: " + foodItem.getFatTotalG());
-            Log.d("FoodSearchAdapter", "Fat Saturated: " + foodItem.getFatSaturatedG());
-            Log.d("FoodSearchAdapter", "Protein: " + foodItem.getProteinG());
-            Log.d("FoodSearchAdapter", "Sodium: " + foodItem.getSodiumMg());
-            Log.d("FoodSearchAdapter", "Potassium: " + foodItem.getPotassiumMg());
-            Log.d("FoodSearchAdapter", "Cholesterol: " + foodItem.getCholesterolMg());
-            Log.d("FoodSearchAdapter", "Carbohydrates Total: " + foodItem.getCarbohydratesTotalG());
-            Log.d("FoodSearchAdapter", "Fiber: " + foodItem.getFiberG());
-            Log.d("FoodSearchAdapter", "Sugar: " + foodItem.getSugarG());
             nameTextView.setText(foodItem.getName());
             String caloriesText = String.format("Calories: %s calories", foodItem.getCalories());
             String servingSizeText = String.format("Serving Size: %.2f g", foodItem.getServingSizeG());

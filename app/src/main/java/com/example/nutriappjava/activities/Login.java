@@ -47,25 +47,21 @@ public class Login extends AppCompatActivity {
         buttonLogin = findViewById(R.id.loginButton);
         signUpButton = findViewById(R.id.createAccountText);
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    attempLogin();
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
-                } catch (InvalidKeySpecException e) {
-                    throw new RuntimeException(e);
-                }
+        buttonLogin.setOnClickListener(v -> {
+
+            try {
+                attempLogin();
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidKeySpecException e) {
+                throw new RuntimeException(e);
             }
         });
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Login.this, SignUp.class);
-                startActivity(intent);
-            }
+        signUpButton.setOnClickListener(v -> {
+
+            Intent intent = new Intent(Login.this, SignUp.class);
+            startActivity(intent);
         });
     }
 

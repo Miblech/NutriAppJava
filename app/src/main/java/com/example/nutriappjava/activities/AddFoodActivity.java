@@ -31,15 +31,13 @@ public class AddFoodActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         List<FoodItem> foodItems = dbHelper.getAllFoods();
-        adapter = new FoodSelectorAdapter(this, foodItems, new FoodSelectorAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(FoodItem foodItem) {
-                Intent intent = new Intent();
-                intent.putExtra("foodItem", foodItem);
-                Log.d("AddFoodActivity", "Sending food item: " + foodItem.getName() + " With ID : " + foodItem.getId());
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+
+        adapter = new FoodSelectorAdapter(this, foodItems, foodItem -> {
+            Intent intent = new Intent();
+            intent.putExtra("foodItem", foodItem);
+            Log.d("AddFoodActivity", "Sending food item: " + foodItem.getName() + " With ID : " + foodItem.getId());
+            setResult(RESULT_OK, intent);
+            finish();
         });
         recyclerView.setAdapter(adapter);
     }
