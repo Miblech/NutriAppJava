@@ -23,10 +23,6 @@
             android:icon="@drawable/ic_library"
             android:title="Logs"/>
         <item
-            android:id="@+id/nav_add_logs"
-            android:icon="@drawable/ic_add_logs"
-            android:title="Add Logs"/>
-        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="Settings"/>

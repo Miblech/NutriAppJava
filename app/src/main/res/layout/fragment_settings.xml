@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SettingsFragment">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings Fragment"
-        android:textSize="30dp"
-        android:layout_centerInParent="true"
-        android:textColor="@color/green"/>
 
     <Button
         android:id="@+id/button_change_password"
@@ -23,5 +14,35 @@
         android:text="Change Password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"/>
+
+
+    <Button
+        android:id="@+id/button_purge_logs"
+        style="@style/SquareLightBlueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_change_password"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="120dp"
+        android:layout_marginStart="133dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="133dp"
+        android:background="@drawable/square_light_blue_background"
+        android:text="Purge Logs" />
+
+    <Button
+        android:id="@+id/button_delete_user_account"
+        style="@style/SquareLightBlueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_purge_logs"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="133dp"
+        android:layout_marginTop="471dp"
+        android:layout_marginEnd="132dp"
+        android:background="@drawable/square_light_blue_background"
+        android:text="Delete User" />
 
 </RelativeLayout>

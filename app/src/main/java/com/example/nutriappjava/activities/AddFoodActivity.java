@@ -19,7 +19,6 @@ public class AddFoodActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FoodSelectorAdapter adapter;
-
     DatabaseHelper dbHelper;
 
     @Override
@@ -37,7 +36,7 @@ public class AddFoodActivity extends AppCompatActivity {
             public void onItemClick(FoodItem foodItem) {
                 Intent intent = new Intent();
                 intent.putExtra("foodItem", foodItem);
-                Log.d("AddFoodActivity", "Sending food item: " + foodItem.getName());
+                Log.d("AddFoodActivity", "Sending food item: " + foodItem.getName() + " With ID : " + foodItem.getId());
                 setResult(RESULT_OK, intent);
                 finish();
             }

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class FoodItem implements Parcelable {
+    private int id;
     private String name;
     private double calories;
     private double servingSizeG;
@@ -18,6 +19,22 @@ public class FoodItem implements Parcelable {
     private double sugarG;
 
     public FoodItem() {
+    }
+
+    public FoodItem(int id, String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
+        this.id = id;
+        this.name = name;
+        this.calories = calories;
+        this.servingSizeG = servingSizeG;
+        this.fatTotalG = fatTotalG;
+        this.fatSaturatedG = fatSaturatedG;
+        this.proteinG = proteinG;
+        this.sodiumMg = sodiumMg;
+        this.potassiumMg = potassiumMg;
+        this.cholesterolMg = cholesterolMg;
+        this.carbohydratesTotalG = carbohydratesTotalG;
+        this.fiberG = fiberG;
+        this.sugarG = sugarG;
     }
 
     public FoodItem(String name, double calories, double servingSizeG, double fatTotalG, double fatSaturatedG, double proteinG, int sodiumMg, int potassiumMg, int cholesterolMg, double carbohydratesTotalG, double fiberG, double sugarG) {
@@ -35,8 +52,8 @@ public class FoodItem implements Parcelable {
         this.sugarG = sugarG;
     }
 
-
     protected FoodItem(Parcel in) {
+        id = in.readInt();
         name = in.readString();
         calories = in.readDouble();
         servingSizeG = in.readDouble();
@@ -75,6 +92,7 @@ public class FoodItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(name);
         dest.writeDouble(calories);
         dest.writeDouble(servingSizeG);
@@ -88,7 +106,13 @@ public class FoodItem implements Parcelable {
         dest.writeDouble(fiberG);
         dest.writeDouble(sugarG);
     }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -187,4 +211,22 @@ public class FoodItem implements Parcelable {
     }
 
 
+    @Override
+    public String toString() {
+        return "FoodItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", calories=" + calories +
+                ", servingSizeG=" + servingSizeG +
+                ", fatTotalG=" + fatTotalG +
+                ", fatSaturatedG=" + fatSaturatedG +
+                ", proteinG=" + proteinG +
+                ", sodiumMg=" + sodiumMg +
+                ", potassiumMg=" + potassiumMg +
+                ", cholesterolMg=" + cholesterolMg +
+                ", carbohydratesTotalG=" + carbohydratesTotalG +
+                ", fiberG=" + fiberG +
+                ", sugarG=" + sugarG +
+                '}';
+    }
 }

@@ -3,8 +3,8 @@ package com.example.nutriappjava.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +17,11 @@ import com.example.nutriappjava.R;
 import com.example.nutriappjava.classes.FoodItem;
 
 public class FoodDetailFragment extends Fragment {
-
     private FoodItem foodItem;
     private TextView nameTextView, caloriesTextView, servingSizeTextView, fatTotalTextView, fatSaturatedTextView, proteinTextView, sodiumTextView, potassiumTextView, cholesterolTextView, carbohydratesTotalTextView, fiberTextView, sugarTextView;
     private Button saveButton;
+
+
 
     public FoodDetailFragment() {
     }
@@ -63,21 +64,13 @@ public class FoodDetailFragment extends Fragment {
 
         saveButton.setOnClickListener(v -> {
             DatabaseHelper db = new DatabaseHelper(getContext());
-            db.insertFoodItem(foodItem);
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getName());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getCalories());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getServingSizeG());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getFatTotalG());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getFatSaturatedG());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getProteinG());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getSodiumMg());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getPotassiumMg());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getCholesterolMg());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getCarbohydratesTotalG());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getFiberG());
-            Log.d("FoodDetailFragment", "Food item saved: " + foodItem.getSugarG());
+            long newId = db.insertFoodItem(foodItem);
+            foodItem.setId((int) newId);
             Toast.makeText(getContext(), "Food item saved", Toast.LENGTH_SHORT).show();
             db.close();
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
         });
 
         return view;
@@ -98,4 +91,6 @@ public class FoodDetailFragment extends Fragment {
         fiberTextView.setText("Fiber: " + String.valueOf(foodItem.getFiberG()));
         sugarTextView.setText("Sugar: " + String.valueOf(foodItem.getSugarG()));
     }
+
+
 }

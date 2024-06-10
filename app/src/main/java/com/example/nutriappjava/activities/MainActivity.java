@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         listAllFoodsAndPrint();
-        dbHelper.getFoodItem(4);
         //dbHelper.clearTables(db);
+        dbHelper.printUniqueFoodItems();
 
 
 

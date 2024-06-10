@@ -21,6 +21,15 @@
         android:textColor="@color/black"/>
 
 
+    <TextView
+        android:id="@+id/no_logs_text_view_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have no logs made for today"
+        android:textSize="18sp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/daily_log_meals"
         android:layout_width="match_parent"
