@@ -63,6 +63,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         String username = sharedPreferences.getString("username", "username");
         String email = sharedPreferences.getString("email", "email");
         String token = sharedPreferences.getString("token", "token");
+        Long userId = sharedPreferences.getLong("userId", 0);
 
         usernameTextView = headerView.findViewById(R.id.header_username);
         emailTextView = headerView.findViewById(R.id.header_email);

@@ -73,6 +73,7 @@ public class Login extends AppCompatActivity {
                     String token = jwtResponse.getToken();
                     Long userId = jwtResponse.getUserId();
                     String email = jwtResponse.getEmail();
+                    String username = jwtResponse.getUsername();
 
                     Log.d("Login", "JWT Token: " + token);
                     Log.d("Login", "User ID: " + userId);
@@ -80,13 +81,10 @@ public class Login extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("username", username);
-                    Log.d("Login", "Username: " + username);
                     editor.putString("token", token);
-                    Log.d("Login", "Token: " + token);
                     editor.putLong("userId", userId);
-                    Log.d("Login", "User ID: " + userId);
                     editor.putString("email", email);
-                    Log.d("Login", "Email: " + email);
+                    editor.putString("username", username);
                     editor.apply();
 
                     Intent intent = new Intent(Login.this, MainMenu.class);
