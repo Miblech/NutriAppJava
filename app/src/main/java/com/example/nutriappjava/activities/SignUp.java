@@ -1,6 +1,7 @@
 package com.example.nutriappjava.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -15,7 +16,6 @@ import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.entities.User;
 import com.example.nutriappjava.services.ApiService;
-
 import java.util.Calendar;
 
 import retrofit2.Call;
@@ -85,9 +85,9 @@ public class SignUp extends AppCompatActivity {
         double height = Double.parseDouble(heightStr);
         double weight = Double.parseDouble(weightStr);
 
-        User user = new User(null, username, email, password, height, weight, gender, selectedDate);
+        User user = new User(username, email, password, height, weight, gender, selectedDate);
 
-        ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
+        ApiService apiService = ApiClient.getRetrofitInstance(false).create(ApiService.class);
         Call<User> call = apiService.registerUser(user);
 
         call.enqueue(new Callback<User>() {
@@ -95,6 +95,9 @@ public class SignUp extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(SignUp.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUp.this, Login.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(SignUp.this, "Registration failed: " + response.message(), Toast.LENGTH_SHORT).show();
                 }

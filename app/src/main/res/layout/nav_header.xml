@@ -3,31 +3,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
-    android:gravity="bottom"
+    android:layout_height="200dp"
+    android:gravity="center"
     android:padding="16dp"
     android:background="@drawable/gradient_background"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:src="@drawable/ic_person" />
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_person"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/circular_background"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/header_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="USERNAME"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/header_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
-        android:textColor="@color/black"
-        android:textStyle="italic"/>
-
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:layout_gravity="center"/>
 </LinearLayout>
