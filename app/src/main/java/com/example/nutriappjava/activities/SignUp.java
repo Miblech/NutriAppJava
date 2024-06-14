@@ -4,21 +4,32 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.R;
+import com.example.nutriappjava.entities.User;
+import com.example.nutriappjava.services.ApiService;
+
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUp extends AppCompatActivity {
 
     private TextView dateTextView;
     private Button datePickerButton;
-
     private Button signUpButton;
+    private EditText editTextUsername, editTextPassword, editTextUserEmail, editTextUserHeight, editTextUserWeight;
+    private RadioGroup radioGroupGender;
     private String selectedDate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +39,15 @@ public class SignUp extends AppCompatActivity {
         dateTextView = findViewById(R.id.DateTextView);
         datePickerButton = findViewById(R.id.DatePickerButton);
         signUpButton = findViewById(R.id.buttonSignUp);
-
-
-        signUpButton.setOnClickListener(v -> {});
+        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        editTextUserEmail = findViewById(R.id.editTextUserEmail);
+        editTextUserHeight = findViewById(R.id.editTextUserHeight);
+        editTextUserWeight = findViewById(R.id.editTextUserWeight);
+        radioGroupGender = findViewById(R.id.radioGroupGender);
 
         datePickerButton.setOnClickListener(v -> showDatePickerDialog());
+        signUpButton.setOnClickListener(v -> performSignUp());
     }
 
     private void showDatePickerDialog() {
@@ -53,7 +68,42 @@ public class SignUp extends AppCompatActivity {
         );
         datePickerDialog.show();
     }
+
+    private void performSignUp() {
+        String username = editTextUsername.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String email = editTextUserEmail.getText().toString().trim();
+        String heightStr = editTextUserHeight.getText().toString().trim();
+        String weightStr = editTextUserWeight.getText().toString().trim();
+        int gender = radioGroupGender.getCheckedRadioButtonId() == R.id.radioButtonMale ? 0 : 1;
+
+        if (username.isEmpty() || password.isEmpty() || email.isEmpty() || heightStr.isEmpty() || weightStr.isEmpty() || selectedDate == null) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double height = Double.parseDouble(heightStr);
+        double weight = Double.parseDouble(weightStr);
+
+        User user = new User(null, username, email, password, height, weight, gender, selectedDate);
+
+        ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
+        Call<User> call = apiService.registerUser(user);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(SignUp.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SignUp.this, "Registration failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(SignUp.this, "Registration failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
-
-
-

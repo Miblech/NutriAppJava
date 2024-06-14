@@ -7,7 +7,6 @@ import okhttp3.OkHttpClient;
 
 public class ApiClient {
     private static final String BASE_URL_EMULATOR = "http://10.0.2.2:8080";
-    private static final String BASE_URL_PHYSICAL = "http://192.168.18.209:8080";
 
     private static Retrofit retrofit;
 
@@ -20,7 +19,7 @@ public class ApiClient {
                     .addInterceptor(logging)
                     .build();
 
-            String baseUrl = isEmulator ? BASE_URL_EMULATOR : BASE_URL_PHYSICAL;
+            String baseUrl = isEmulator ? BASE_URL_EMULATOR : BASE_URL_EMULATOR;
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
