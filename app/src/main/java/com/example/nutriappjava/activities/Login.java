@@ -1,13 +1,10 @@
 package com.example.nutriappjava.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,12 +13,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.nutriappjava.DatabaseHelper;
+import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.R;
-import com.example.nutriappjava.SecurityUtils;
+import com.example.nutriappjava.entities.JwtRequest;
+import com.example.nutriappjava.entities.JwtResponse;
+import com.example.nutriappjava.services.ApiService;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
@@ -31,16 +33,10 @@ public class Login extends AppCompatActivity {
     private Button buttonLogin;
     private TextView signUpButton;
 
-    private DatabaseHelper dbHelper;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        dbHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 
         usernameEditText = findViewById(R.id.usernameOrEmailInput);
         passwordEditText = findViewById(R.id.passwordInput);
@@ -48,75 +44,62 @@ public class Login extends AppCompatActivity {
         signUpButton = findViewById(R.id.createAccountText);
 
         buttonLogin.setOnClickListener(v -> {
+            String username = usernameEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
 
-            try {
-                attempLogin();
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeySpecException e) {
-                throw new RuntimeException(e);
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+                Toast.makeText(Login.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
+            } else {
+                performLogin(username, password);
             }
         });
 
         signUpButton.setOnClickListener(v -> {
-
             Intent intent = new Intent(Login.this, SignUp.class);
             startActivity(intent);
         });
     }
 
-    @SuppressLint("Range")
-    private void attempLogin() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String usernameOrEmail = usernameEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
+    private void performLogin(String username, String password) {
+        ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
+        JwtRequest loginRequest = new JwtRequest(username.trim(), password.trim());
 
-        if (TextUtils.isEmpty(usernameOrEmail) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Call<JwtResponse> call = apiService.authenticate(loginRequest);
+        call.enqueue(new Callback<JwtResponse>() {
+            @Override
+            public void onResponse(Call<JwtResponse> call, Response<JwtResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    JwtResponse jwtResponse = response.body();
+                    String token = jwtResponse.getToken();
 
-        String[] selectionArgs = {usernameOrEmail};
+                    Log.d("Login", "JWT Token: " + token);
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(
-                "users",                     // Table name
-                null,                        // Columns to select
-                "user_username=? OR user_email=?", // Selection clause
-                selectionArgs,               // Selection arguments
-                null,                        // Group by
-                null,                        // Having
-                null                         // Order by
-        );
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", username);
+                    editor.putString("token", token);
+                    editor.apply();
 
-        if (cursor!= null && cursor.moveToFirst()) {
-            @SuppressLint("Range") String storedPassword = cursor.getString(cursor.getColumnIndex("user_password"));
-            @SuppressLint("Range") String storedSalt = cursor.getString(cursor.getColumnIndex("user_salt"));
-            @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("user_email"));
-            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex("user_username"));
-
-            String HashedPassword = SecurityUtils.hashPassword(password, storedSalt);
-
-            if (HashedPassword.equals(storedPassword)) {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("userId", cursor.getInt(cursor.getColumnIndex("user_id")));
-                editor.putString("username", username);
-                editor.putString("email", email);
-                editor.apply();
-
-                Intent intent = new Intent(Login.this, MainMenu.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, MainMenu.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    String errorMessage = "Login failed";
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage = response.errorBody().string();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Toast.makeText(Login.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
             }
-        } else {
-            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
-        }
 
-        if (cursor!= null) {
-            cursor.close();
-        }
+            @Override
+            public void onFailure(Call<JwtResponse> call, Throwable t) {
+                Toast.makeText(Login.this, "Login failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
 }

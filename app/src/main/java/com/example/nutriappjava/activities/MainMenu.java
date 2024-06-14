@@ -19,7 +19,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.nutriappjava.DatabaseHelper;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.fragments.AboutFragment;
 import com.example.nutriappjava.fragments.FoodFragment;
@@ -51,53 +50,69 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "username");
         String email = sharedPreferences.getString("email", "email");
+        String token = sharedPreferences.getString("token", "token");
 
         TextView usernameTextView = headerView.findViewById(R.id.header_username);
         TextView emailTextView = headerView.findViewById(R.id.header_email);
-        Log.d("MainMenu", "Found usernameTextView: " + (usernameTextView!= null? "Yes" : "No"));
-        Log.d("MainMenu", "Found emailTextView: " + (emailTextView!= null? "Yes" : "No"));
+        Log.d("MainMenu", "Found usernameTextView: " + (usernameTextView != null ? "Yes" : "No"));
+        Log.d("MainMenu", "Found emailTextView: " + (emailTextView != null ? "Yes" : "No"));
 
-        if (usernameTextView!= null) {
+        if (usernameTextView != null) {
             Log.d("MainMenu", "Setting username: " + username);
             usernameTextView.setText(username);
         } else {
             Log.e("MainMenu", "usernameTextView is null");
         }
 
-        if (emailTextView!= null) {
+        if (emailTextView != null) {
             Log.d("MainMenu", "Setting email: " + email);
             emailTextView.setText(email);
         } else {
             Log.e("MainMenu", "emailTextView is null");
         }
 
+        Log.d("MainMenu", "Token: " + token);
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment(DatabaseHelper.getInstance(this))).commit();
+            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(id.nav_home);
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == id.nav_home) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new HomeFragment(DatabaseHelper.getInstance(this))).commit();
-        } else if (item.getItemId() == id.nav_profile) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new ProfileFragment()).commit();
-        } else if (item.getItemId() == id.nav_food) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new FoodFragment()).commit();
-        } else if (item.getItemId() == id.nav_logs) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new LogsFragment()).commit();
-        } else if (item.getItemId() == id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new SettingsFragment()).commit();
-        } else if (item.getItemId() == id.nav_info) {
-            getSupportFragmentManager().beginTransaction().replace(id.fragment_container, new AboutFragment()).commit();
-        } else if (item.getItemId() == id.nav_logout) {
-            Intent intent = new Intent(MainMenu.this, Login.class);
-            startActivity(intent);
-            finish();
+        int itemId = item.getItemId();
+        if (itemId == R.id.nav_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        } else if (itemId == R.id.nav_profile) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+        } else if (itemId == R.id.nav_food) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FoodFragment()).commit();
+        } else if (itemId == R.id.nav_logs) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LogsFragment()).commit();
+        } else if (itemId == R.id.nav_settings) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+        } else if (itemId == R.id.nav_info) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+        } else if (itemId == R.id.nav_logout) {
+            handleLogout();
+        } else {
+            return false;
         }
-        drawerLayout.closeDrawer((NavigationView) findViewById(id.nav_view));
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void handleLogout() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent intent = new Intent(MainMenu.this, Login.class);
+        startActivity(intent);
+        finish();
     }
 
     @SuppressWarnings("deprecation")
