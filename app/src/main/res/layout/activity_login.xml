@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,51 +12,63 @@
         android:layout_height="72dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        android:layout_gravity="center_horizontal"
         android:src="@drawable/nutri_app_logo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/centeredGroup"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/logoImageView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:id="@+id/loginForm"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="@+id/centeredGroup"
-            app:layout_constraintRight_toRightOf="@+id/centeredGroup"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/centeredGroup">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/usernameOrEmailInput"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username or Email"
-                android:inputType="textEmailAddress" />
+                android:layout_marginBottom="16dp">
 
-            <EditText
-                android:id="@+id/passwordInput"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/usernameOrEmailInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username or Email"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                android:layout_marginBottom="16dp">
 
-            <Button
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Login" />
+                android:text="Login"
+                android:backgroundTint="@color/lavender"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/createAccountText"
@@ -64,7 +77,10 @@
                 android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="Create New Account" />
+                android:text="Create New Account"
+                android:textColor="@color/lavender"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
 
@@ -74,9 +90,8 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/loginForm"
-            app:layout_constraintLeft_toLeftOf="@+id/centeredGroup"
-            app:layout_constraintRight_toRightOf="@+id/centeredGroup"/>
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".activities.MainMenu">
 
     <TextView
         android:id="@+id/home_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/black"/>
-
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/home_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/black"/>
-
-
-    <TextView
-        android:id="@+id/no_logs_text_view_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="You have no logs made for today"
-        android:textSize="18sp"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/daily_log_meals"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:dividerHeight="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"/>
 
     <Button
         android:id="@+id/button_add_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Add Daily Log for Today"/>
-
+        android:text="Add Daily Log for Today"
+        android:background="@drawable/square_light_blue_background"
+        android:textColor="@color/white"
+        android:padding="12dp"/>
 </LinearLayout>
-
