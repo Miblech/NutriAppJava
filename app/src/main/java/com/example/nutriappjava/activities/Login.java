@@ -84,7 +84,6 @@ public class Login extends AppCompatActivity {
                     editor.putString("token", token);
                     editor.putLong("userId", userId);
                     editor.putString("email", email);
-                    editor.putString("username", username);
                     editor.apply();
 
                     Intent intent = new Intent(Login.this, MainMenu.class);

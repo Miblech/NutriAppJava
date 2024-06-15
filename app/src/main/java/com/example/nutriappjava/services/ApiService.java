@@ -4,6 +4,7 @@ import com.example.nutriappjava.entities.DailyLog;
 import com.example.nutriappjava.entities.JwtRequest;
 import com.example.nutriappjava.entities.JwtResponse;
 import com.example.nutriappjava.entities.NutrientSummary;
+import com.example.nutriappjava.entities.PasswordChangeRequest;
 import com.example.nutriappjava.entities.User;
 
 import java.util.List;
@@ -37,11 +38,14 @@ public interface ApiService {
     Call<Void> deleteCurrentUser(@Header("Authorization") String token);
 
     @PUT("/api/users/me/renew-password")
-    Call<Boolean> renewPassword(@Header("Authorization") String token, @Body String oldPassword, @Body String newPassword);
+    Call<Boolean> renewPassword(@Header("Authorization") String token, @Body PasswordChangeRequest request);
 
     @GET("/api/user/logs/count")
     Call<Long> getUserLogsCount(@Header("Authorization") String token);
 
     @GET("/api/logs/user/summary")
     Call<NutrientSummary> getTotalNutrientSummaryForUser(@Header("Authorization") String token);
+
+    @DELETE("/api/logs/user")
+    Call<Void> deleteAllUserLogs(@Header("Authorization") String token);
 }

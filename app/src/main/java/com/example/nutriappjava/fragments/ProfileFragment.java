@@ -3,18 +3,19 @@ package com.example.nutriappjava.fragments;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.util.Log;
-
-import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.R;
+import com.example.nutriappjava.services.ApiService;
+import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.entities.NutrientSummary;
 import com.example.nutriappjava.entities.User;
-import com.example.nutriappjava.services.ApiService;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -37,8 +38,9 @@ public class ProfileFragment extends Fragment {
     private PieChart mealLogsPieChart;
     private SharedPreferences sharedPreferences;
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         usernameInfo = view.findViewById(R.id.username_info);
@@ -69,6 +71,16 @@ public class ProfileFragment extends Fragment {
                     usernameInfo.setText("Username: " + user.getUserUsername());
                     emailInfo.setText("Email: " + user.getUserEmail());
                     bmiInfo.setText("BMI: " + user.calculateBMIStatus());
+
+                    // Update SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", user.getUserUsername());
+                    editor.putString("email", user.getUserEmail());
+                    editor.putString("dob", user.getUserDob());
+                    editor.putFloat("height", (float) user.getUserHeight());
+                    editor.putFloat("weight", (float) user.getUserWeight());
+                    editor.putInt("gender", user.getUserGender());
+                    editor.apply();
                 } else {
                     Log.e("ProfileFragment", "Failed to fetch user data: " + response.message());
                 }

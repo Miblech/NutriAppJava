@@ -58,9 +58,9 @@
 
             <TextView
                 android:id="@+id/DateTextView"
-                android:text="Date of Birth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:hint="Date of Birth"
                 android:textSize="18sp"/>
 
             <Button
@@ -138,4 +138,5 @@
             android:background="@color/design_default_color_primary"
             android:textColor="@android:color/white"/>
     </LinearLayout>
+
 </ScrollView>

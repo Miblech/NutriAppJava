@@ -1,9 +1,5 @@
 package com.example.nutriappjava.activities;
 
-import static com.example.nutriappjava.R.*;
-
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,23 +15,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.R;
-import com.example.nutriappjava.entities.DailyLog;
 import com.example.nutriappjava.fragments.AboutFragment;
 import com.example.nutriappjava.fragments.FoodFragment;
 import com.example.nutriappjava.fragments.HomeFragment;
 import com.example.nutriappjava.fragments.LogsFragment;
 import com.example.nutriappjava.fragments.ProfileFragment;
 import com.example.nutriappjava.fragments.SettingsFragment;
-import com.example.nutriappjava.services.ApiService;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,22 +47,18 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         toggle.syncState();
 
         sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "username");
-        String email = sharedPreferences.getString("email", "email");
-        String token = sharedPreferences.getString("token", "token");
-        Long userId = sharedPreferences.getLong("userId", 0);
 
         usernameTextView = headerView.findViewById(R.id.header_username);
         emailTextView = headerView.findViewById(R.id.header_email);
 
-        usernameTextView.setText(username);
-        emailTextView.setText(email);
+        updateHeader();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
@@ -101,7 +84,6 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     }
 
     private void handleLogout() {
-
         SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
@@ -112,7 +94,14 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         finish();
     }
 
-    @SuppressWarnings("deprecation")
+    private void updateHeader() {
+        String username = sharedPreferences.getString("username", "username");
+        String email = sharedPreferences.getString("email", "email");
+
+        usernameTextView.setText(username);
+        emailTextView.setText(email);
+    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
