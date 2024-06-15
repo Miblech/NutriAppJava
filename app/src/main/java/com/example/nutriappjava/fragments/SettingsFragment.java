@@ -40,7 +40,6 @@ public class SettingsFragment extends Fragment {
         });
 
         buttonUpdateUserData.setOnClickListener(v -> {
-            // Navigate to UpdateUserDataFragment
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new UpdateUserDataFragment())
                     .addToBackStack(null)
