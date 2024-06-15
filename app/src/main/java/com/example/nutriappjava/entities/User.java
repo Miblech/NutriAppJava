@@ -2,6 +2,10 @@ package com.example.nutriappjava.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.gson.annotations.SerializedName;
 
 public class User {
@@ -32,24 +36,24 @@ public class User {
     }
 
     public User(String userUsername, String userEmail, String userPassword, double userHeight, double userWeight, int userGender, String userDob) {
-        this.userUsername = userUsername;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userHeight = userHeight;
-        this.userWeight = userWeight;
-        this.userGender = userGender;
-        this.userDob = userDob;
+        setUserUsername(userUsername);
+        setUserEmail(userEmail);
+        setUserPassword(userPassword);
+        setUserHeight(userHeight);
+        setUserWeight(userWeight);
+        setUserGender(userGender);
+        setUserDob(userDob);
     }
 
     public User(Long userId, String userUsername, String userEmail, String userPassword, double userHeight, double userWeight, int userGender, String userDob) {
         this.userId = userId;
-        this.userUsername = userUsername;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userHeight = userHeight;
-        this.userWeight = userWeight;
-        this.userGender = userGender;
-        this.userDob = userDob;
+        setUserUsername(userUsername);
+        setUserEmail(userEmail);
+        setUserPassword(userPassword);
+        setUserHeight(userHeight);
+        setUserWeight(userWeight);
+        setUserGender(userGender);
+        setUserDob(userDob);
     }
 
     public Long getUserId() {
@@ -65,6 +69,9 @@ public class User {
     }
 
     public void setUserUsername(String userUsername) {
+        if (userUsername == null || userUsername.isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
         this.userUsername = userUsername;
     }
 
@@ -73,6 +80,9 @@ public class User {
     }
 
     public void setUserEmail(String userEmail) {
+        if (!isValidEmail(userEmail)) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
         this.userEmail = userEmail;
     }
 
@@ -81,6 +91,9 @@ public class User {
     }
 
     public void setUserPassword(String userPassword) {
+        if (userPassword == null || userPassword.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
         this.userPassword = userPassword;
     }
 
@@ -89,6 +102,9 @@ public class User {
     }
 
     public void setUserHeight(double userHeight) {
+        if (userHeight <= 0.5 || userHeight > 2.5) { // reasonable height range in meters
+            throw new IllegalArgumentException("Height must be between 0.5 and 2.5 meters");
+        }
         this.userHeight = userHeight;
     }
 
@@ -97,6 +113,9 @@ public class User {
     }
 
     public void setUserWeight(double userWeight) {
+        if (userWeight <= 2.0 || userWeight > 300.0) { // reasonable weight range in kg
+            throw new IllegalArgumentException("Weight must be between 2.0 and 300.0 kg");
+        }
         this.userWeight = userWeight;
     }
 
@@ -105,6 +124,9 @@ public class User {
     }
 
     public void setUserGender(int userGender) {
+        if (userGender < 0 || userGender > 2) { // assuming 0: unknown, 1: male, 2: female
+            throw new IllegalArgumentException("Gender must be 0 (unknown), 1 (male), or 2 (female)");
+        }
         this.userGender = userGender;
     }
 
@@ -113,11 +135,14 @@ public class User {
     }
 
     public void setUserDob(String userDob) {
+        if (!isValidAge(userDob)) {
+            throw new IllegalArgumentException("User must be at least 18 years old");
+        }
         this.userDob = userDob;
     }
 
     public String calculateBMIStatus() {
-        if (userHeight == 0 || userWeight == 0|| userHeight == 0) {
+        if (userHeight == 0 || userWeight == 0) {
             return "Invalid height or weight";
         }
 
@@ -133,5 +158,19 @@ public class User {
         } else {
             return "Obese";
         }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean isValidAge(String dob) {
+        LocalDate birthDate = LocalDate.parse(dob);
+        LocalDate currentDate = LocalDate.now();
+        int age = Period.between(birthDate, currentDate).getYears();
+        return age >= 18;
     }
 }

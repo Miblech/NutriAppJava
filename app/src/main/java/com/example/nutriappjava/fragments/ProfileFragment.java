@@ -1,6 +1,7 @@
 package com.example.nutriappjava.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,8 +12,17 @@ import android.util.Log;
 
 import com.example.nutriappjava.ApiClient;
 import com.example.nutriappjava.R;
+import com.example.nutriappjava.entities.NutrientSummary;
 import com.example.nutriappjava.entities.User;
 import com.example.nutriappjava.services.ApiService;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +34,7 @@ public class ProfileFragment extends Fragment {
     private TextView emailInfo;
     private TextView totalLogsInfo;
     private TextView bmiInfo;
+    private PieChart mealLogsPieChart;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -34,20 +45,21 @@ public class ProfileFragment extends Fragment {
         emailInfo = view.findViewById(R.id.email_info);
         totalLogsInfo = view.findViewById(R.id.tv_total_logs);
         bmiInfo = view.findViewById(R.id.tv_bmi);
+        mealLogsPieChart = view.findViewById(R.id.mealLogsPieChart);
 
         sharedPreferences = getActivity().getSharedPreferences("UserDetails", getActivity().MODE_PRIVATE);
-        Long userId = sharedPreferences.getLong("userId", -1);
         String token = sharedPreferences.getString("token", "token");
 
-        fetchUserData(userId, token);
+        fetchUserData(token);
         fetchUserLogsCount(token);
+        fetchNutrientSummary(token);
 
         return view;
     }
 
-    private void fetchUserData(Long userId, String token) {
+    private void fetchUserData(String token) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
-        Call<User> call = apiService.getUserById(userId, "Bearer " + token);
+        Call<User> call = apiService.getCurrentUser("Bearer " + token);
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -89,5 +101,51 @@ public class ProfileFragment extends Fragment {
                 Log.e("ProfileFragment", "Error fetching logs count: " + t.getMessage());
             }
         });
+    }
+
+    private void fetchNutrientSummary(String token) {
+        ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
+        Call<NutrientSummary> call = apiService.getTotalNutrientSummaryForUser("Bearer " + token);
+
+        call.enqueue(new Callback<NutrientSummary>() {
+            @Override
+            public void onResponse(Call<NutrientSummary> call, Response<NutrientSummary> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    NutrientSummary summary = response.body();
+                    setupPieChart(summary);
+                } else {
+                    Log.e("ProfileFragment", "Failed to fetch nutrient summary: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NutrientSummary> call, Throwable t) {
+                Log.e("ProfileFragment", "Error fetching nutrient summary: " + t.getMessage());
+            }
+        });
+
+    }
+
+    private void setupPieChart(NutrientSummary summary) {
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(summary.getCarbohydrate(), "Carbohydrates"));
+        entries.add(new PieEntry(summary.getProtein(), "Proteins"));
+        entries.add(new PieEntry(summary.getFat(), "Fats"));
+        entries.add(new PieEntry(summary.getFiber(), "Fiber"));
+        entries.add(new PieEntry(summary.getSugarTotal(), "Sugar"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "|||  : Nutrient Summary All Time");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(12f);
+
+        PieData pieData = new PieData(dataSet);
+        mealLogsPieChart.setData(pieData);
+        mealLogsPieChart.invalidate();
+
+        mealLogsPieChart.getDescription().setEnabled(false);
+        mealLogsPieChart.setDrawHoleEnabled(true);
+        mealLogsPieChart.setHoleColor(Color.WHITE);
+        mealLogsPieChart.setTransparentCircleRadius(58f);
     }
 }

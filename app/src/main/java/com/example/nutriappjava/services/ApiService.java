@@ -3,15 +3,18 @@ package com.example.nutriappjava.services;
 import com.example.nutriappjava.entities.DailyLog;
 import com.example.nutriappjava.entities.JwtRequest;
 import com.example.nutriappjava.entities.JwtResponse;
+import com.example.nutriappjava.entities.NutrientSummary;
 import com.example.nutriappjava.entities.User;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -23,8 +26,22 @@ public interface ApiService {
 
     @GET("api/logs/user/today")
     Call<List<DailyLog>> getLogsForToday(@Header("Authorization") String token);
-    @GET("/api/get/{id}")
-    Call<User> getUserById(@Path("id") Long id, @Header("Authorization") String token);
+
+    @GET("/api/users/me")
+    Call<User> getCurrentUser(@Header("Authorization") String token);
+
+    @PUT("/api/users/me/update")
+    Call<User> updateCurrentUser(@Header("Authorization") String token, @Body User user);
+
+    @DELETE("/api/users/me/delete")
+    Call<Void> deleteCurrentUser(@Header("Authorization") String token);
+
+    @PUT("/api/users/me/renew-password")
+    Call<Boolean> renewPassword(@Header("Authorization") String token, @Body String oldPassword, @Body String newPassword);
+
     @GET("/api/user/logs/count")
     Call<Long> getUserLogsCount(@Header("Authorization") String token);
+
+    @GET("/api/logs/user/summary")
+    Call<NutrientSummary> getTotalNutrientSummaryForUser(@Header("Authorization") String token);
 }

@@ -82,11 +82,25 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
-        double height = Double.parseDouble(heightStr);
-        double weight = Double.parseDouble(weightStr);
+        double height;
+        double weight;
+        try {
+            height = Double.parseDouble(heightStr);
+            weight = Double.parseDouble(weightStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Height and Weight must be valid numbers", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        User user = new User(username, email, password, height, weight, gender, selectedDate);
+        try {
+            User user = new User(username, email, password, height, weight, gender, selectedDate);
+            registerUser(user);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void registerUser(User user) {
         ApiService apiService = ApiClient.getRetrofitInstance(false).create(ApiService.class);
         Call<User> call = apiService.registerUser(user);
 
