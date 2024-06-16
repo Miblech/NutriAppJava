@@ -1,6 +1,7 @@
 package com.example.nutriappjava.services;
 
 import com.example.nutriappjava.entities.DailyLog;
+import com.example.nutriappjava.entities.Food;
 import com.example.nutriappjava.entities.JwtRequest;
 import com.example.nutriappjava.entities.JwtResponse;
 import com.example.nutriappjava.entities.NutrientSummary;
@@ -16,7 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @POST("/api/authenticate")
@@ -48,4 +49,7 @@ public interface ApiService {
 
     @DELETE("/api/logs/user")
     Call<Void> deleteAllUserLogs(@Header("Authorization") String token);
+
+    @GET("/api/foods")
+    Call<List<Food>> getAllFoods();
 }
