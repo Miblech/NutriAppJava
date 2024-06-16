@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nutriappjava.FoodAdapter;
+
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.entities.Food;
 import com.example.nutriappjava.FoodViewModel;
@@ -23,7 +23,7 @@ import java.util.List;
 public class FoodFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private FoodAdapter foodAdapter;
+    private com.example.nutriappjava.adapters.FoodAdapter foodAdapter;
     private FoodViewModel foodViewModel;
 
     @Nullable
@@ -32,7 +32,7 @@ public class FoodFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_food, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        foodAdapter = new FoodAdapter();
+        foodAdapter = new com.example.nutriappjava.adapters.FoodAdapter();
         recyclerView.setAdapter(foodAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

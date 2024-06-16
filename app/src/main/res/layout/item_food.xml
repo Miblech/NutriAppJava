@@ -3,13 +3,68 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/food_description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Food Description"
-        android:textSize="16sp"/>
-    <!-- Add more views as needed -->
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/food_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category: "
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/food_protein"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Protein: 0g"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_blue_dark"/>
+
+        <TextView
+            android:id="@+id/food_carbohydrate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Carbohydrate: 0g"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_green_dark"/>
+
+        <TextView
+            android:id="@+id/food_fat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fat: 0g"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_red_dark"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/food_calories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calories: 0 kcal"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_orange_dark"
+        android:layout_marginTop="4dp"/>
+
 </LinearLayout>

@@ -1,15 +1,13 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.nutriappjava.R;
 import com.example.nutriappjava.entities.Food;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         Food food = foodList.get(position);
         holder.description.setText(food.getDescription());
-        // Add more bindings as needed
+        holder.category.setText("Category: " + food.getCategory());
+        holder.protein.setText("Protein: " + food.getProtein() + "g");
+        holder.carbohydrate.setText("Carbohydrate: " + food.getCarbohydrate() + "g");
+        holder.fat.setText("Fat: " + food.getTotalLipid() + "g");
+        holder.calories.setText("Calories: " + calculateCalories(food) + " kcal");
     }
 
     @Override
@@ -41,13 +43,22 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return foodList.size();
     }
 
+    private String calculateCalories(Food food) {
+        float calories = (food.getProtein() * 4) + (food.getCarbohydrate() * 4) + (food.getTotalLipid() * 9);
+        return String.valueOf(calories);
+    }
+
     static class FoodViewHolder extends RecyclerView.ViewHolder {
-        TextView description;
+        TextView description, category, protein, carbohydrate, fat, calories;
 
         public FoodViewHolder(@NonNull View itemView) {
             super(itemView);
             description = itemView.findViewById(R.id.food_description);
-            // Add more view bindings as needed
+            category = itemView.findViewById(R.id.food_category);
+            protein = itemView.findViewById(R.id.food_protein);
+            carbohydrate = itemView.findViewById(R.id.food_carbohydrate);
+            fat = itemView.findViewById(R.id.food_fat);
+            calories = itemView.findViewById(R.id.food_calories);
         }
     }
 }
