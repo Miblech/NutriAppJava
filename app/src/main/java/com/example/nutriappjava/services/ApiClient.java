@@ -1,4 +1,4 @@
-package com.example.nutriappjava;
+package com.example.nutriappjava.services;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

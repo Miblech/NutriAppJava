@@ -14,6 +14,15 @@ import java.util.List;
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
 
     private List<Food> foodList = new ArrayList<>();
+    private OnFoodClickListener onFoodClickListener;
+
+    public interface OnFoodClickListener {
+        void onFoodClick(Food food);
+    }
+
+    public void setOnFoodClickListener(OnFoodClickListener listener) {
+        this.onFoodClickListener = listener;
+    }
 
     public void setFoodList(List<Food> foodList) {
         this.foodList = foodList;
@@ -36,6 +45,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.carbohydrate.setText("Carbohydrate: " + food.getCarbohydrate() + "g");
         holder.fat.setText("Fat: " + food.getTotalLipid() + "g");
         holder.calories.setText("Calories: " + calculateCalories(food) + " kcal");
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onFoodClickListener != null) {
+                onFoodClickListener.onFoodClick(food);
+            }
+        });
     }
 
     @Override

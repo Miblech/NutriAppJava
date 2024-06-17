@@ -57,4 +57,9 @@ public class NutrientSummary {
     public void setSugarTotal(float sugarTotal) {
         this.sugarTotal = sugarTotal;
     }
+
+    @Override
+    public String toString() {
+        return "Carbs: " + carbohydrate + "g, Protein: " + protein + "g, Fat: " + fat + "g, Fiber: " + fiber + "g, Sugar: " + sugarTotal + "g";
+    }
 }

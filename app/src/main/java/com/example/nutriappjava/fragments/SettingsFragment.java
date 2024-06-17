@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.nutriappjava.ApiClient;
+import com.example.nutriappjava.services.ApiClient;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.activities.Login;
 import com.example.nutriappjava.services.ApiService;

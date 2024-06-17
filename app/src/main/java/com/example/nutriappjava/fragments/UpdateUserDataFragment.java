@@ -18,10 +18,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nutriappjava.ApiClient;
+import com.example.nutriappjava.services.ApiClient;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.activities.Login;
-import com.example.nutriappjava.activities.MainMenu;
 import com.example.nutriappjava.entities.User;
 import com.example.nutriappjava.services.ApiService;
 

@@ -7,15 +7,16 @@ import java.util.List;
 public class DailyLog {
     private Long logId;
     private User user;
-    private LocalDate date;
-    private LocalDateTime timestamp;
+    private String date;
+    private String timestamp;
     private String mealType;
     private List<MealItem> mealItems;
+
 
     public DailyLog() {
     }
 
-    public DailyLog(Long logId, User user, LocalDate date, LocalDateTime timestamp, String mealType, List<MealItem> mealItems) {
+    public DailyLog(Long logId, User user, String date, String timestamp, String mealType, List<MealItem> mealItems) {
         this.logId = logId;
         this.user = user;
         this.date = date;
@@ -40,19 +41,19 @@ public class DailyLog {
         this.user = user;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

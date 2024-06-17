@@ -14,6 +14,9 @@ public class MealItemKey implements Serializable {
         this.foodItemId = foodItemId;
     }
 
+    public MealItemKey(Long id) {
+    }
+
     public Long getLogId() {
         return this.logId;
     }

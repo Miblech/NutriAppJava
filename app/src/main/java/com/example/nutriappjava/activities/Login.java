@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.nutriappjava.ApiClient;
+import com.example.nutriappjava.services.ApiClient;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.entities.JwtRequest;
 import com.example.nutriappjava.entities.JwtResponse;

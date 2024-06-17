@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.nutriappjava.ApiClient;
+import com.example.nutriappjava.services.ApiClient;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.entities.User;
 import com.example.nutriappjava.services.ApiService;

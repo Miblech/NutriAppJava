@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/food_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:paddingBottom="8dp"
+            android:text="Description" />
+
+        <TextView
+            android:id="@+id/food_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Category: " />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nutrients"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="8dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/food_nutrient_data_bank_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Nutrient Data Bank Number: " />
+
+        <TextView
+            android:id="@+id/food_carbohydrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Carbohydrate: " />
+
+        <TextView
+            android:id="@+id/food_protein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Protein: " />
+
+        <TextView
+            android:id="@+id/food_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Fat: " />
+
+        <TextView
+            android:id="@+id/food_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Calories: " />
+
+        <TextView
+            android:id="@+id/food_alpha_carotene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Alpha Carotene: " />
+
+        <TextView
+            android:id="@+id/food_beta_carotene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Beta Carotene: " />
+
+        <TextView
+            android:id="@+id/food_beta_cryptoxanthin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Beta Cryptoxanthin: " />
+
+        <TextView
+            android:id="@+id/food_cholesterol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Cholesterol: " />
+
+        <TextView
+            android:id="@+id/food_choline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Choline: " />
+
+        <TextView
+            android:id="@+id/food_fiber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Fiber: " />
+
+        <TextView
+            android:id="@+id/food_lutein_and_zeaxanthin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Lutein and Zeaxanthin: " />
+
+        <TextView
+            android:id="@+id/food_lycopene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Lycopene: " />
+
+        <TextView
+            android:id="@+id/food_niacin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Niacin: " />
+
+        <TextView
+            android:id="@+id/food_retinol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Retinol: " />
+
+        <TextView
+            android:id="@+id/food_riboflavin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Riboflavin: " />
+
+        <TextView
+            android:id="@+id/food_selenium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Selenium: " />
+
+        <TextView
+            android:id="@+id/food_sugar_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Sugar Total: " />
+
+        <TextView
+            android:id="@+id/food_thiamin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Thiamin: " />
+
+        <TextView
+            android:id="@+id/food_water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Water: " />
+
+        <TextView
+            android:id="@+id/food_monosaturated_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Monosaturated Fat: " />
+
+        <TextView
+            android:id="@+id/food_polysaturated_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Polysaturated Fat: " />
+
+        <TextView
+            android:id="@+id/food_saturated_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Saturated Fat: " />
+
+        <TextView
+            android:id="@+id/food_total_lipid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Total Lipid: " />
+
+        <TextView
+            android:id="@+id/food_calcium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Calcium: " />
+
+        <TextView
+            android:id="@+id/food_copper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Copper: " />
+
+        <TextView
+            android:id="@+id/food_iron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Iron: " />
+
+        <TextView
+            android:id="@+id/food_magnesium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Magnesium: " />
+
+        <TextView
+            android:id="@+id/food_phosphorus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Phosphorus: " />
+
+        <TextView
+            android:id="@+id/food_potassium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Potassium: " />
+
+        <TextView
+            android:id="@+id/food_sodium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Sodium: " />
+
+        <TextView
+            android:id="@+id/food_zinc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Zinc: " />
+
+        <TextView
+            android:id="@+id/food_vitamin_a_rae"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Vitamin A RAE: " />
+
+        <TextView
+            android:id="@+id/food_vitamin_b12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Vitamin B12: " />
+
+        <TextView
+            android:id="@+id/food_vitamin_b6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Vitamin B6: " />
+
+        <TextView
+            android:id="@+id/food_vitamin_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Vitamin C: " />
+
+        <TextView
+            android:id="@+id/food_vitamin_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Vitamin E: " />
+
+        <TextView
+            android:id="@+id/food_vitamin_k"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Vitamin K: " />
+    </LinearLayout>
+</ScrollView>

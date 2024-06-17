@@ -10,13 +10,12 @@ public class MealItem {
     public MealItem() {
     }
 
-    public MealItem(MealItemKey id, DailyLog dailyLog, Food food, Float weight) {
-        this.id = id;
-        this.dailyLog = dailyLog;
+    public MealItem( Food food, Float weight) {
         this.food = food;
         this.weight = weight;
+    }
 
-
+    public MealItem(MealItemKey mealItemKey, DailyLog dailyLog, Food food, float weight) {
     }
 
     public MealItemKey getId() {

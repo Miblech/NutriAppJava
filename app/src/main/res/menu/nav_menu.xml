@@ -15,7 +15,35 @@
         <item
             android:id="@+id/nav_food"
             android:icon="@drawable/ic_food"
-            android:title="Food"/>
+            android:title="Food">
+            <menu>
+                <item
+                    android:id="@+id/nav_search_food"
+                    android:icon="@drawable/ic_search"
+                    android:title="Search Food"/>
+
+                <item
+                    android:id="@+id/nav_categories"
+                    android:icon="@drawable/ic_menu"
+                    android:title="Categories"/>
+                <item
+                    android:id="@+id/nav_list_all_food"
+                    android:icon="@drawable/ic_menu"
+                    android:title="List All Food"/>
+                <item
+                    android:id="@+id/nav_sort_by_protein"
+                    android:icon="@drawable/ic_menu"
+                    android:title="Sort by Protein"/>
+                <item
+                    android:id="@+id/nav_sort_by_carbohydrate"
+                    android:icon="@drawable/ic_menu"
+                    android:title="Sort by Carbohydrate"/>
+                <item
+                    android:id="@+id/nav_sort_by_fat"
+                    android:icon="@drawable/ic_menu"
+                    android:title="Sort by Fat"/>
+            </menu>
+        </item>
         <item
             android:id="@+id/nav_logs"
             android:icon="@drawable/ic_library"

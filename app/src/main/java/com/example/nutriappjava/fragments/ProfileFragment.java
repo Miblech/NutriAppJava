@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.services.ApiService;
-import com.example.nutriappjava.ApiClient;
+import com.example.nutriappjava.services.ApiClient;
 import com.example.nutriappjava.entities.NutrientSummary;
 import com.example.nutriappjava.entities.User;
 import com.github.mikephil.charting.charts.PieChart;
@@ -147,7 +147,7 @@ public class ProfileFragment extends Fragment {
         entries.add(new PieEntry(summary.getSugarTotal(), "Sugar"));
 
         PieDataSet dataSet = new PieDataSet(entries, "|||  : Nutrient Summary All Time");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setColors(ColorTemplate.PASTEL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(12f);
 
