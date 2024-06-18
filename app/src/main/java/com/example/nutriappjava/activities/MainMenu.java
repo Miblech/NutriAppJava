@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.nutriappjava.R;
 import com.example.nutriappjava.fragments.AboutFragment;
 import com.example.nutriappjava.fragments.FoodFragment;
+import com.example.nutriappjava.fragments.FoodSearchLibraryFragment;
+import com.example.nutriappjava.fragments.SearchFoodFragment;
 import com.example.nutriappjava.fragments.HomeFragment;
 import com.example.nutriappjava.fragments.LogsFragment;
 import com.example.nutriappjava.fragments.ProfileFragment;
@@ -84,6 +86,8 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         } else if (itemId == R.id.nav_logout) {
             handleLogout();
             return true;
+        } else if (itemId == R.id.nav_search_food) {
+            selectedFragment = new FoodSearchLibraryFragment();
         } else if (itemId == R.id.nav_list_all_food) {
             foodViewModel.loadFoods();
             selectedFragment = new FoodFragment();

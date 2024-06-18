@@ -22,5 +22,11 @@
         <item>Dinner</item>
     </string-array>
 
+    <string-array name="spinner_logs_filter">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
 
 </resources>

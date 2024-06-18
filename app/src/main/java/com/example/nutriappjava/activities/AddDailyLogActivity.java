@@ -114,7 +114,42 @@ public class AddDailyLogActivity extends AppCompatActivity implements SearchFood
             }
         });
 
+        mealItemAdapter.setOnItemClickListener(new MealItemAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                showDeleteFoodDialog(position);
+            }
+        });
+
         setDefaultDate();
+    }
+
+    private void showDeleteFoodDialog(int position) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_confirm_delete);
+
+        Button yesButton = dialog.findViewById(R.id.button_yes);
+        Button noButton = dialog.findViewById(R.id.button_no);
+
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedFoods.remove(position);
+                foodWeights.remove(position);
+                mealItemAdapter.updateMealItems(selectedFoods, foodWeights);
+                dialog.dismiss();
+                updateRecyclerView();
+            }
+        });
+
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private void setDefaultDate() {

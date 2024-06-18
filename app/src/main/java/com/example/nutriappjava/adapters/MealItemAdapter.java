@@ -14,6 +14,15 @@ public class MealItemAdapter extends RecyclerView.Adapter<MealItemAdapter.MealIt
 
     private List<Food> foods;
     private List<Float> weights;
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
 
     public MealItemAdapter(List<Food> foods, List<Float> weights) {
         this.foods = foods;
@@ -24,7 +33,7 @@ public class MealItemAdapter extends RecyclerView.Adapter<MealItemAdapter.MealIt
     @Override
     public MealItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent, false);
-        return new MealItemViewHolder(view);
+        return new MealItemViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -40,25 +49,32 @@ public class MealItemAdapter extends RecyclerView.Adapter<MealItemAdapter.MealIt
         return foods.size();
     }
 
-    public void addMealItem(Food food, Float weight) {
-        foods.add(food);
-        weights.add(weight);
-        notifyItemInserted(foods.size() - 1);
-    }
+    public static class MealItemViewHolder extends RecyclerView.ViewHolder {
+        public TextView foodDescription;
+        public TextView foodWeight;
 
-    public void updateMealItems(List<Food> newFoods, List<Float> newWeights) {
-        this.foods = newFoods;
-        this.weights = newWeights;
-        notifyDataSetChanged();
-    }
-
-    static class MealItemViewHolder extends RecyclerView.ViewHolder {
-        TextView foodDescription, foodWeight;
-
-        public MealItemViewHolder(@NonNull View itemView) {
+        public MealItemViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             foodDescription = itemView.findViewById(R.id.meal_name_text_view);
             foodWeight = itemView.findViewById(R.id.meal_serving_size_text_view);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
+    }
+
+    public void updateMealItems(List<Food> foods, List<Float> weights) {
+        this.foods = foods;
+        this.weights = weights;
+        notifyDataSetChanged();
     }
 }
