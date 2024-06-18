@@ -24,6 +24,12 @@ import com.example.nutriappjava.viewmodels.SearchFoodViewModel;
 
 import java.util.List;
 
+/**
+ * Facilitates searching for food items within a library.
+ * Users can input a search term, and upon clicking a search button, the application queries a database or external service for matching food items.
+ * The results are displayed in a RecyclerView using a FoodAdapter.
+ * When a user selects a food item from the list, the application communicates the selection back to the hosting activity or fragment through an {@link OnFoodSelectedListener}.
+ */
 public class SearchFoodFragment extends Fragment {
 
     private EditText searchInput;
@@ -34,6 +40,9 @@ public class SearchFoodFragment extends Fragment {
     private SearchFoodViewModel searchFoodViewModel;
     private OnFoodSelectedListener onFoodSelectedListener;
 
+    /**
+     * Interface definition for a callback to be invoked when a food item is selected.
+     */
     public interface OnFoodSelectedListener {
         void onFoodSelected(Food food);
     }

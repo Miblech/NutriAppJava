@@ -27,57 +27,66 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
-    private EditText usernameEditText;
-    private EditText passwordEditText;
+    private EditText usernameEditText; // Input field for username or email
+    private EditText passwordEditText; // Input field for password
 
-    private Button buttonLogin;
-    private TextView signUpButton;
+    private Button buttonLogin; // Login button
+    private TextView signUpButton; // Navigate to sign-up screen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize UI components
         usernameEditText = findViewById(R.id.usernameOrEmailInput);
         passwordEditText = findViewById(R.id.passwordInput);
         buttonLogin = findViewById(R.id.loginButton);
         signUpButton = findViewById(R.id.createAccountText);
 
+        // Set click listener for the login button
         buttonLogin.setOnClickListener(v -> {
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+            String username = usernameEditText.getText().toString(); // Get username or email
+            String password = passwordEditText.getText().toString(); // Get password
 
+            // Validate input fields
             if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                 Toast.makeText(Login.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
             } else {
-                performLogin(username, password);
+                performLogin(username, password); // Perform login operation
             }
         });
 
+        // Set click listener for the sign-up button
         signUpButton.setOnClickListener(v -> {
             Intent intent = new Intent(Login.this, SignUp.class);
-            startActivity(intent);
+            startActivity(intent); // Navigate to sign-up activity
         });
     }
 
+    /**
+     * Performs the login operation by sending a request to the backend.
+     * @author nombr
+     * @param username Username or email entered by the user
+     * @param password Password entered by the user
+     */
     private void performLogin(String username, String password) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
-        JwtRequest loginRequest = new JwtRequest(username.trim(), password.trim());
+        JwtRequest loginRequest = new JwtRequest(username.trim(), password.trim()); // Create login request
 
+        // Make a POST request to authenticate the user
         Call<JwtResponse> call = apiService.authenticate(loginRequest);
         call.enqueue(new Callback<JwtResponse>() {
             @Override
             public void onResponse(Call<JwtResponse> call, Response<JwtResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    JwtResponse jwtResponse = response.body();
-                    String token = jwtResponse.getToken();
-                    Long userId = jwtResponse.getUserId();
-                    String email = jwtResponse.getEmail();
-                    String username = jwtResponse.getUsername();
+                if (response.isSuccessful() && response.body()!= null) {
+                    JwtResponse jwtResponse = response.body(); // Parse the response
+                    String token = jwtResponse.getToken(); // Extract JWT token
+                    Long userId = jwtResponse.getUserId(); // Extract user ID
+                    String email = jwtResponse.getEmail(); // Extract email
+                    String username = jwtResponse.getUsername(); // Extract username
 
-                    Log.d("Login", "JWT Token: " + token);
-                    Log.d("Login", "User ID: " + userId);
-
+                    // Store user details in shared preferences
                     SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("username", username);
@@ -86,14 +95,16 @@ public class Login extends AppCompatActivity {
                     editor.putString("email", email);
                     editor.apply();
 
+                    // Navigate to the main menu activity
                     Intent intent = new Intent(Login.this, MainMenu.class);
                     startActivity(intent);
-                    finish();
+                    finish(); // Finish the login activity
                 } else {
+                    // Handle login failure
                     String errorMessage = "Login failed";
-                    if (response.errorBody() != null) {
+                    if (response.errorBody()!= null) {
                         try {
-                            errorMessage = response.errorBody().string();
+                            errorMessage = response.errorBody().string(); // Extract error message
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -104,6 +115,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JwtResponse> call, Throwable t) {
+                // Display error message on failure
                 Toast.makeText(Login.this, "Login failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

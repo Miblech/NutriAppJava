@@ -29,6 +29,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+/**
+ * Displays the user's profile information and a pie chart summarizing their nutrient intake.
+ * This fragment fetches data from the backend service, including the user's basic info, total logs,
+ * and a summary of nutrients consumed over time.
+ */
 public class ProfileFragment extends Fragment {
 
     private TextView usernameInfo;
@@ -59,6 +65,11 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Fetches and displays the user's basic information from the backend.
+     * @see User
+     * @param token Authentication token of the current user
+     */
     private void fetchUserData(String token) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
         Call<User> call = apiService.getCurrentUser("Bearer " + token);
@@ -93,6 +104,11 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Fetches and displays the total number of logs made by the user.
+     * @see ApiService#getUserLogsCount(String)
+     * @param token Authentication token of the current user
+     */
     private void fetchUserLogsCount(String token) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
         Call<Long> call = apiService.getUserLogsCount("Bearer " + token);
@@ -115,6 +131,11 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Fetches and displays a summary of the user's nutrient intake over time.
+     * @see ApiService#getTotalNutrientSummaryForUser(String)
+     * @param token Authentication token of the current user
+     */
     private void fetchNutrientSummary(String token) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
         Call<NutrientSummary> call = apiService.getTotalNutrientSummaryForUser("Bearer " + token);
@@ -138,6 +159,10 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    /**
+     * Configures and updates the pie chart with the user's nutrient summary data.
+     * @param summary Nutrient summary data for the user
+     */
     private void setupPieChart(NutrientSummary summary) {
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(summary.getCarbohydrate(), "Carbohydrates"));

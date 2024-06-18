@@ -30,6 +30,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Allows users to update their personal information, such as username, email, height, weight, gender, and date of birth.
+ * Interacts with a backend service to fetch the current user's data and to update the user's information.
+ * Provides a date picker dialog for selecting the date of birth.
+ */
 public class UpdateUserDataFragment extends Fragment {
 
     private EditText etUsername;
@@ -70,6 +75,11 @@ public class UpdateUserDataFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Fetches the current user's data from the backend service.
+     * @see ApiService#getCurrentUser
+     * @param token The authentication token of the current user
+     */
     private void fetchCurrentUserData(String token) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
         Call<User> call = apiService.getCurrentUser("Bearer " + token);
@@ -92,6 +102,10 @@ public class UpdateUserDataFragment extends Fragment {
         });
     }
 
+    /**
+     * Populates the UI with the current user's data.
+     * @param user The current user's data
+     */
     private void populateUserData(User user) {
         etUsername.setText(user.getUserUsername());
         etEmail.setText(user.getUserEmail());
@@ -105,6 +119,11 @@ public class UpdateUserDataFragment extends Fragment {
         etDob.setText(user.getUserDob());
     }
 
+    /**
+     * Updates the user's data in the backend service.
+     * @see ApiService#updateCurrentUser
+     * @param token The authentication token of the current user
+     */
     private void updateUserData(String token) {
         String username = etUsername.getText().toString().isEmpty() ? currentUser.getUserUsername() : etUsername.getText().toString();
         String email = etEmail.getText().toString().isEmpty() ? currentUser.getUserEmail() : etEmail.getText().toString();
@@ -144,6 +163,9 @@ public class UpdateUserDataFragment extends Fragment {
         });
     }
 
+    /**
+     * Handles logout after updating user data successfully.
+     */
     private void handleLogout() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
@@ -154,6 +176,9 @@ public class UpdateUserDataFragment extends Fragment {
         getActivity().finish();
     }
 
+    /**
+     * Shows a date picker dialog for selecting the date of birth.
+     */
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

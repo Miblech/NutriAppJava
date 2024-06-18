@@ -91,6 +91,14 @@ public class LogsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Fetches and displays daily logs for the selected date.
+     *
+     * @param date The selected date for which to fetch logs
+     *             (in the format "yyyy-MM-dd")
+     *             e.g., "2022-01-01"
+     * @see com.example.nutriappjava.services.ApiService#getLogsForDate(String, String)
+     */
     private void fetchLogsForSelectedDate(String date) {
         progressBar.setVisibility(View.VISIBLE);
         logsViewModel.getLogsForDate(getToken(), date).observe(getViewLifecycleOwner(), dailyLogs -> {
@@ -99,6 +107,13 @@ public class LogsFragment extends Fragment {
         });
     }
 
+    /**
+     * Fetches and displays daily logs for the selected period.
+     *
+     * @param period The selected period for which to fetch logs (e.g., today, week, month)
+     *               e.g., "today", "week", "month"
+     * @see com.example.nutriappjava.services.ApiService#getLogsForPeriod(String, String)
+     */
     private void fetchLogsForSelectedPeriod(String period) {
         progressBar.setVisibility(View.VISIBLE);
         logsViewModel.getLogsForPeriod(getToken(), period).observe(getViewLifecycleOwner(), dailyLogs -> {
@@ -107,14 +122,31 @@ public class LogsFragment extends Fragment {
         });
     }
 
+    /**
+     * Fetches and updates the pie chart with the nutrient summary for the selected period.
+     * @see com.example.nutriappjava.services.ApiService#getLogSummaryForPeriod(String, String)
+     * @param period The selected period for which to fetch the nutrient summary
+     *               e.g., "today", "week", "month"
+     */
     private void fetchSummaryForSelectedPeriod(String period) {
         logsViewModel.getLogSummaryForPeriod(getToken(), period).observe(getViewLifecycleOwner(), this::updatePieChart);
     }
 
+    /**
+     * Fetches and updates the pie chart with the nutrient summary for the selected date.
+     * @see com.example.nutriappjava.services.ApiService#getLogSummaryForDate(String, String)
+     * @param date The selected date for which to fetch the nutrient summary
+     *             (in the format "yyyy-MM-dd")
+     */
     private void fetchSummaryForSelectedDate(String date) {
         logsViewModel.getLogSummaryForDate(getToken(), date).observe(getViewLifecycleOwner(), this::updatePieChart);
     }
 
+    /**
+     * Updates the RecyclerView with the provided list of daily logs.
+     * @see LogsAdapter#setDailyLogs(List)
+     * @param dailyLogs The list of daily logs to display
+     */
     private void updateLogs(List<DailyLog> dailyLogs) {
         if (dailyLogs == null || dailyLogs.isEmpty()) {
             noLogsTextView.setVisibility(View.VISIBLE);
@@ -126,17 +158,34 @@ public class LogsFragment extends Fragment {
         }
     }
 
+    /**
+     * Retrieves the authentication token from shared preferences.
+     *
+     * @return The authentication token
+     */
     private String getToken() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
         return sharedPreferences.getString("token", "");
     }
 
+    /**
+     * Formats a date string using the specified pattern.
+     *
+     * @param year The year
+     * @param month The month
+     * @param dayOfMonth The day of the month
+     * @return Formatted date string
+     */
     private String formatDateString(int year, int month, int dayOfMonth) {
         LocalDate date = LocalDate.of(year, month + 1, dayOfMonth);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return date.format(formatter);
     }
 
+    /**
+     * Updates the pie chart with the provided nutrient summary data.
+     * @param summary The nutrient summary data to visualize
+     */
     private void updatePieChart(NutrientSummary summary) {
         if (summary == null) {
             pieChart.clear();

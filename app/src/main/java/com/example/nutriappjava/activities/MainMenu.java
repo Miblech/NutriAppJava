@@ -19,17 +19,17 @@ import com.example.nutriappjava.R;
 import com.example.nutriappjava.fragments.AboutFragment;
 import com.example.nutriappjava.fragments.FoodFragment;
 import com.example.nutriappjava.fragments.FoodSearchLibraryFragment;
-import com.example.nutriappjava.fragments.SearchFoodFragment;
 import com.example.nutriappjava.fragments.HomeFragment;
 import com.example.nutriappjava.fragments.LogsFragment;
 import com.example.nutriappjava.fragments.ProfileFragment;
 import com.example.nutriappjava.fragments.SettingsFragment;
-import com.example.nutriappjava.viewmodels.FoodViewModel;
+import com.example.nutriappjava.viewmodels.FoodViewModel; // Placeholder for FoodViewModel
 import com.google.android.material.navigation.NavigationView;
 
 @SuppressWarnings("deprecation")
 public class MainMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    // Fields for UI components and data management
     private DrawerLayout drawerLayout;
     private TextView usernameTextView;
     private TextView emailTextView;
@@ -41,6 +41,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        // Initialize UI components and set up navigation drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -68,39 +69,82 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation item selections
         Fragment selectedFragment = null;
 
         int itemId = item.getItemId();
         if (itemId == R.id.nav_home) {
+            /**
+             * Navigates to the HomeFragment.
+             * @see HomeFragment
+             */
             selectedFragment = new HomeFragment();
         } else if (itemId == R.id.nav_profile) {
+            /**
+             * Navigates to the ProfileFragment.
+             * @see ProfileFragment
+             */
             selectedFragment = new ProfileFragment();
         } else if (itemId == R.id.nav_food) {
+            /**
+             * Navigates to the FoodFragment.
+             * @see FoodFragment
+             */
             selectedFragment = new FoodFragment();
         } else if (itemId == R.id.nav_logs) {
+            /**
+             * Navigates to the LogsFragment.
+             * @see LogsFragment
+             */
             selectedFragment = new LogsFragment();
         } else if (itemId == R.id.nav_settings) {
+            /**
+             * Navigates to the SettingsFragment.
+             * @see SettingsFragment
+             */
             selectedFragment = new SettingsFragment();
         } else if (itemId == R.id.nav_info) {
+            /**
+             * Navigates to the AboutFragment.
+             * @see AboutFragment
+             */
             selectedFragment = new AboutFragment();
         } else if (itemId == R.id.nav_logout) {
             handleLogout();
             return true;
         } else if (itemId == R.id.nav_search_food) {
+            /**
+             * @see foodViewModel#searchFood(String)
+             */
             selectedFragment = new FoodSearchLibraryFragment();
         } else if (itemId == R.id.nav_list_all_food) {
+            /**
+             * @see foodViewModel#loadFoods()
+             */
             foodViewModel.loadFoods();
             selectedFragment = new FoodFragment();
         } else if (itemId == R.id.nav_sort_by_protein) {
+            /**
+             * @see foodViewModel#loadFoodsSortedBy(String)
+             */
             foodViewModel.loadFoodsSortedBy("protein");
             selectedFragment = new FoodFragment();
         } else if (itemId == R.id.nav_sort_by_carbohydrate) {
+            /**
+             * @see foodViewModel#loadFoodsSortedBy(String)
+             */
             foodViewModel.loadFoodsSortedBy("carbohydrate");
             selectedFragment = new FoodFragment();
         } else if (itemId == R.id.nav_sort_by_fat) {
+            /**
+             * @see foodViewModel#loadFoodsSortedBy(String)
+             */
             foodViewModel.loadFoodsSortedBy("fat");
             selectedFragment = new FoodFragment();
         } else if (itemId == R.id.nav_categories) {
+            /**
+             * @see foodViewModel#loadCategories()
+             */
             foodViewModel.loadCategories();
             selectedFragment = new FoodFragment();
         }
@@ -124,6 +168,11 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         finish();
     }
 
+    /**
+     * Updates the header view with the current user's username and email.
+     * @see Login#performLogin(String, String)
+     * @see SharedPreferences
+     */
     private void updateHeader() {
         String username = sharedPreferences.getString("username", "username");
         String email = sharedPreferences.getString("email", "email");
@@ -132,8 +181,12 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         emailTextView.setText(email);
     }
 
+    /**
+     * Impedes back to Main Acitivity.
+     */
     @Override
     public void onBackPressed() {
+        // Handle back press to close the drawer or go back in the fragment stack
         super.onBackPressed();
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);

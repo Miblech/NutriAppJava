@@ -22,8 +22,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Allows users to sign up for an account.
+ * Users can input their personal details such as username, email, password, height, weight, and select their gender.
+ * Upon successful registration, the user is redirected to the login page.
+ */
 public class SignUp extends AppCompatActivity {
 
+    // Fields for UI components and data storage
     private TextView dateTextView;
     private Button datePickerButton;
     private Button signUpButton;
@@ -36,6 +42,7 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        // Initialize UI components
         dateTextView = findViewById(R.id.DateTextView);
         datePickerButton = findViewById(R.id.DatePickerButton);
         signUpButton = findViewById(R.id.buttonSignUp);
@@ -46,10 +53,14 @@ public class SignUp extends AppCompatActivity {
         editTextUserWeight = findViewById(R.id.editTextUserWeight);
         radioGroupGender = findViewById(R.id.radioGroupGender);
 
+        // Set click listeners for UI components
         datePickerButton.setOnClickListener(v -> showDatePickerDialog());
         signUpButton.setOnClickListener(v -> performSignUp());
     }
 
+    /**
+     * Shows a date picker dialog to allow the user to select their birthdate.
+     */
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -69,6 +80,11 @@ public class SignUp extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    /**
+     * Performs the sign-up operation by gathering user input and registering the user.
+     * @see User;
+     * @see SignUp#registerUser(User);
+     */
     private void performSignUp() {
         String username = editTextUsername.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -100,6 +116,11 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
+    /**
+     * Registers the user with the provided details.
+     * @see ApiService#registerUser(User)
+     * @param user User details to be registered.
+     */
     private void registerUser(User user) {
         ApiService apiService = ApiClient.getRetrofitInstance(false).create(ApiService.class);
         Call<User> call = apiService.registerUser(user);

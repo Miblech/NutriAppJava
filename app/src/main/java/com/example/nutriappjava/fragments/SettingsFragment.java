@@ -21,6 +21,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Provides settings options for users, including changing their password, purging their logs, deleting their user account, or updating their user data.
+ * This fragment interacts with a backend service to perform actions like deleting all user logs or deleting the user account.
+ */
 public class SettingsFragment extends Fragment {
 
     private Button buttonChangePassword;
@@ -57,6 +61,10 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Opens the Change Password fragment.
+     * @see ChangePasswordFragment
+     */
     private void openChangePasswordFragment() {
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new ChangePasswordFragment())
@@ -64,6 +72,10 @@ public class SettingsFragment extends Fragment {
                 .commit();
     }
 
+    /**
+     * Deletes all user logs from the server.
+     * @see ApiService#deleteAllUserLogs(String)
+     */
     private void purgeLogs() {
         String token = sharedPreferences.getString("token", "token");
 
@@ -87,6 +99,10 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    /**
+     * Deletes the current user account from the server.
+     * @see ApiService#deleteCurrentUser(String)
+     */
     private void deleteUserAccount() {
         String token = sharedPreferences.getString("token", "token");
 
@@ -111,6 +127,10 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    /**
+     * Redirects the user to the login screen.
+     * Clears the shared preferences and starts the login activity.
+     */
     private void redirectToLogin() {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

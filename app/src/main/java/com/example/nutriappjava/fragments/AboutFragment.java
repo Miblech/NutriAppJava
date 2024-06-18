@@ -10,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nutriappjava.R;
 
+/**
+ * Displays information about the application, including links to privacy policies or other relevant documents.
+ * This fragment contains a clickable text view that opens a YouTube video when clicked.
+ */
 public class AboutFragment extends Fragment {
 
     public AboutFragment() {
@@ -33,10 +38,18 @@ public class AboutFragment extends Fragment {
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivity(intent);
             }else{
-                intent.setData(Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
-                startActivity(intent);
+                showToast("Unable to open link.");
             }
         });
         return view;
+    }
+
+    /**
+     * Shows a toast message to the user.
+     *
+     * @param message The message to display
+     */
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

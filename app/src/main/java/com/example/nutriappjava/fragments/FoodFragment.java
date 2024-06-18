@@ -21,6 +21,11 @@ import com.example.nutriappjava.entities.Food;
 import com.example.nutriappjava.viewmodels.FoodViewModel;
 import java.util.List;
 
+/**
+ * Displays a list of foods categorized by various categories.
+ * This fragment uses a {@link FoodViewModel} to fetch and manage the data related to foods and categories.
+ * It observes changes in the data and updates the UI accordingly, showing a progress bar during data loading.
+ */
 public class FoodFragment extends Fragment implements CategoryAdapter.OnCategoryClickListener, FoodAdapter.OnFoodClickListener {
     private RecyclerView recyclerView;
     private FoodAdapter foodAdapter;
@@ -91,6 +96,12 @@ public class FoodFragment extends Fragment implements CategoryAdapter.OnCategory
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * Handles category click events.
+     * Loads foods belonging to the clicked category and updates the UI.
+     * @see FoodViewModel#loadFoodsByCategory(String)
+     * @param category The category clicked by the user
+     */
     @Override
     public void onCategoryClick(String category) {
         progressBar.setVisibility(View.VISIBLE);
@@ -98,6 +109,11 @@ public class FoodFragment extends Fragment implements CategoryAdapter.OnCategory
         recyclerView.setAdapter(foodAdapter);
     }
 
+    /**
+     * Handles individual food item click events.
+     * Navigates to a detail screen for the clicked food item.
+     * @param food The food item clicked by the user
+     */
     @Override
     public void onFoodClick(Food food) {
         FoodDetailFragment foodDetailFragment = FoodDetailFragment.newInstance(food.getId());

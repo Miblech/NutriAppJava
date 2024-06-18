@@ -22,6 +22,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Allows users to change their password.
+ * This fragment collects the current and new passwords from the user and submits them to a backend service.
+ * Upon successful password change, it displays a success message and navigates back to the previous fragment.
+ */
 public class ChangePasswordFragment extends Fragment {
 
     private EditText editTextCurrentPassword;
@@ -46,6 +51,11 @@ public class ChangePasswordFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Submits the current and new passwords to the backend service for validation and change.
+     * @see ApiService#renewPassword
+     * @param token The authentication token of the current user
+     */
     private void changePassword(String token) {
         String currentPassword = editTextCurrentPassword.getText().toString();
         String newPassword = editTextNewPassword.getText().toString();

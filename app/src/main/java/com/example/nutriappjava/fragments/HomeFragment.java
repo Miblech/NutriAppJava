@@ -31,6 +31,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * @author nombr/Miblech
+ * Represents the home fragment where users can view their daily logs.
+ * This fragment fetches and displays the logs for the current day from the backend.
+ * It also allows users to add new logs and view details of existing logs.
+ */
 public class HomeFragment extends Fragment implements DailyLogAdapter.OnItemClickListener {
     private TextView usernameTextView;
     private RecyclerView dailyLogRecyclerView;
@@ -42,25 +49,31 @@ public class HomeFragment extends Fragment implements DailyLogAdapter.OnItemClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Initialize shared preferences and retrieve user details
         sharedPreferences = getActivity().getSharedPreferences("UserDetails", getActivity().MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "username");
         String token = sharedPreferences.getString("token", "token");
 
+        // Initialize UI components
         usernameTextView = view.findViewById(R.id.home_username);
         Button addButton = view.findViewById(R.id.button_add_meal);
         dailyLogRecyclerView = view.findViewById(R.id.daily_log_recycler_view);
 
+        // Set up RecyclerView for daily logs
         dailyLogRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         dailyLogAdapter = new DailyLogAdapter(token, this);
         dailyLogRecyclerView.setAdapter(dailyLogAdapter);
 
+        // Update username TextView with user's name
         usernameTextView.setText("Hello " + username);
 
+        // Set click listener for the "Add Meal" button
         addButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddDailyLogActivity.class);
             startActivity(intent);
         });
 
+        // Fetch and display daily logs for the current day
         checkDailyLogs(username, token);
 
         return view;
@@ -70,11 +83,18 @@ public class HomeFragment extends Fragment implements DailyLogAdapter.OnItemClic
     public void onResume() {
         super.onResume();
 
+        // Re-fetch and display daily logs when the fragment resumes
         String username = sharedPreferences.getString("username", "username");
         String token = sharedPreferences.getString("token", "token");
         checkDailyLogs(username, token);
     }
 
+    /**
+     * Fetches and displays the daily logs for the current day.
+     * @see ApiService#getLogsForToday(String)
+     * @param username The username of the current user
+     * @param token The authentication token of the current user
+     */
     public void checkDailyLogs(String username, String token) {
         ApiService apiService = ApiClient.getRetrofitInstance(true).create(ApiService.class);
         Call<List<DailyLog>> call = apiService.getLogsForToday("Bearer " + token);

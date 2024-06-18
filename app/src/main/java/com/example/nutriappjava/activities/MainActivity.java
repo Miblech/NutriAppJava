@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+            // Create an Intent that will start the second activity
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
         }

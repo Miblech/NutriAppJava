@@ -14,6 +14,10 @@ import com.example.nutriappjava.R;
 import com.example.nutriappjava.entities.Food;
 import com.example.nutriappjava.viewmodels.FoodDetailViewModel;
 
+/**
+ * Displays detailed information about a specific food item, including its nutritional content.
+ * This fragment observes data from a {@link FoodDetailViewModel} to fetch and display information about the food item identified by a unique ID.
+ */
 public class FoodDetailFragment extends Fragment {
     private static final String ARG_FOOD_ID = "food_id";
     private long foodId;
@@ -136,6 +140,12 @@ public class FoodDetailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Calculates the total calories of the food item based on its protein, carbohydrate, and lipid content.
+     *
+     * @param food The {@link Food} object containing the nutritional data of the food item
+     * @return The calculated total calories as a string
+     */
     private String calculateCalories(Food food) {
         float calories = (food.getProtein() * 4) + (food.getCarbohydrate() * 4) + (food.getTotalLipid() * 9);
         return String.valueOf(calories);
