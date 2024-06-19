@@ -32,8 +32,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+
+import javax.xml.transform.Templates;
 
 public class LogsFragment extends Fragment {
 
@@ -200,7 +203,7 @@ public class LogsFragment extends Fragment {
         entries.add(new PieEntry(summary.getSugarTotal(), "Sugar"));
 
         PieDataSet dataSet = new PieDataSet(entries, "Nutrient Summary");
-        dataSet.setColors(new int[] { Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.MAGENTA });
+        dataSet.setColors(ColorTemplate.PASTEL_COLORS);
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.invalidate();
@@ -211,5 +214,6 @@ public class LogsFragment extends Fragment {
         legend.setFormSize(12f);
         legend.setXEntrySpace(10f);
         legend.setYEntrySpace(5f);
+        //new int[] { Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.MAGENTA }
     }
 }
