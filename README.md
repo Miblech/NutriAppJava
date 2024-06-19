@@ -56,9 +56,9 @@ Before starting with NutriAppJava, ensure you have the following installed:
 
 The application communicates with the backend via Retrofit. The `ApiService` interface outlines the API endpoints used for various functionalities like user authentication, food management, and logging nutritional data.
 
-## Endpoints
+## Tutorial
 
-The application utilizes several API endpoints for different purposes, including retrieving, adding, updating, and deleting food items.
+For a visual guide on how to use NutriAppJava, please download our tutorial PDF: [NutriAppJava_Tutorial.pdf](NutriAppJava_Tutorial.pdf)
 
 ## License
 
